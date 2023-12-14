@@ -1,0 +1,136 @@
+a{
+    color:white;
+}
+
+.card-det{
+    width:90%;
+    /* border:1px solid white; */
+    margin:2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.left-col{
+    width:100%;
+}
+.right-col{
+    width:100%;
+}
+.left-col .order{
+    width:100%;
+}
+.hd{
+    /* border:1px solid white; */
+}
+.wsh-header{
+    width:100%;
+    display:flex;
+    padding:1rem;
+    box-sizing: border-box;
+    justify-content: space-between;
+    background-color: #1C3E5A;
+}
+
+/* applies both in row and header */
+.products{
+    width:40%;
+}
+
+.price{
+   display:none
+    
+}
+.price h4{
+    width:100%;
+    word-break: break-all;
+    font-size: 1rem;
+    
+}
+  
+.add{
+    width:10%;
+    text-align: center;
+}
+.remove{
+    width:20%;
+    text-align: center;
+}
+/* applies both in row and header */
+.wsh-row{
+    display: flex;
+    margin-top:1rem;
+    padding:1rem;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #0D2B47;
+}
+.wsh-row img{
+    width:5rem;
+}
+.wsh-row h3{
+    font-size: clamp(0.56rem,.85rem,1rem);
+}
+.wsh-row p{
+    font-size: clamp(0.56rem,.85rem,1rem);
+}
+ 
+ 
+/* Computer screen */
+@media screen and (min-width: 700px) {
+.search-cont{
+    width:30%;
+}
+.card-det{
+    width:80%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+ 
+.wsh-row,.wsh-header{
+    justify-content: space-between;
+}
+
+.left-col{
+    width:100%;
+}
+ /* applies both in row and header */
+.products{
+    width:40%;
+}
+.sub-price{
+    display:none;
+}
+.price{
+    width: 20%;
+    text-align: center;
+    padding:1px;
+    display: flex;
+    justify-content: center;
+    
+}
+.price h4{
+    width:100%;
+    word-break: break-all;
+    font-size: 1rem;
+    
+}
+  
+.add{
+    width:10%;
+    text-align: center;
+}
+.remove{
+    width:10%;
+    text-align: center;
+}
+/* applies both in row and header */
+.wsh-row .td{
+    display: flex;
+    /* justify-content: space-between; */
+}
+.wsh-row img{
+    width:8rem;
+    margin-right:1rem;
+}
+}

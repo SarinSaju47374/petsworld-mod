@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Form</title>
+  <style>
+    body {
+      background-color: #333;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    
+    .container {
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #222;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .otp-input {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .otp-input input {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      font-size: 24px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+    
+    .otp-input input:focus {
+      outline: none;
+      box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
+    }
+    
+    .otp-submit {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .otp-submit input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #00aaff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .otp-submit input[type="submit"]:hover {
+      background-color: #0088dd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Enter OTP</h2>
+    <form id="otpForm" action="/login" method="POST">
+      <div class="otp-input">
+        <input type="text" maxlength="1" autofocus>
+        <input type="text" maxlength="1">
+        <input type="text" maxlength="1">
+        <input type="text" maxlength="1">
+      </div>
+      <div class="otp-submit">
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('otpForm');
+    const inputs = form.querySelectorAll('input[type="text"]');
+
+    inputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        const value = e.target.value;
+        if (value.length === 1) {
+          if (index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          } else {
+            inputs[index].blur();
+             
+          }
+        }
+      });
+
+      input.addEventListener('keydown', (e) => {
+        const value = e.target.value;
+        if (e.keyCode === 8 && value.length === 0) {
+          if (index > 0) {
+            inputs[index - 1].focus();
+          }
+        }
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const otpData = Array.from(inputs).map((input) => Number(input.value)).join("");
+  console.log('Entered OTP:', Number(otpData));
+
+  // Create an object to hold the data
+  const data = {
+    otp: Number(otpData)
+  };
+
+  // Send the data to the server
+  fetch('/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(responseData => {
+    // Process the server's response
+    console.log('Server response:', responseData);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Product Card/Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <link rel="stylesheet" href="/styles/descr.css" type="text/css">
+</head>
+  <body>
+    
+    <div class = "card-wrapper" >
+      <div class = "card-descr" style="margin-top:10rem;">
+        <!-- card left -->
+        <div class = "product-imgs">
+          <div class = "img-display">
+            <div class = "img-showcase first" style="background-image:url('{{product.photo.[0].filepath}}')">
+              <!-- <img class="example" src = "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg" alt = "shoe image"> -->
+              <span class="lens"></span>
+            </div>
+            <div class="second"></div>
+          </div>
+          <div class = "img-select">
+            {{# each product.photo}}
+              <div class = "img-item">
+                <a href = "#" >
+                  <img src = '{{this.filepath}}' alt = "{{this.title}}">
+                </a>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+        <!-- card right -->
+        <div class = "product-content">
+          <h2 class = "product-title">{{product.productName}}</h2>
+          
+          <div class="star-rating" style="--rating:{{product.rating}}%;">
+              <div class="star" id="starRating">
+                  ★★★★★
+              </div>
+          </div>
+
+          <div class = "product-price">
+            <p class = "last-price">Old Price: <span>Rs {{product.productPrice}}</span></p>
+            <p class = "new-price">New Price: <span>Rs {{product.salePrice}}</span></p>
+          </div>
+
+          <div class = "product-detail">
+            <h2 style="color:rgb(222, 185, 185)">About this item: </h2>
+            <p>{{product.description}}</p>
+             
+            <ul>
+              <li>Available: 
+                {{#if (condition product.stock)}}
+                  In Stock
+                  {{else}}
+                  Out Of Stock
+                {{/if}}
+              <li>Category: <span>{{product.category.name}} {{product.subCategory.name}}</span></li>
+              <li>Brand: <span>{{product.brandName}}</span></li>
+              <li>Shipping Area: <span>India</span></li>
+              <li>Shipping Fee: <span>Free</span></li>
+            </ul>
+          </div>
+
+          <div class = "purchase-info">
+            {{#if (condition product.stock)}}
+              <button type = "button" class = "btn" onclick='cartAdder("{{product._id}}")'>
+                Add to Cart <i class = "fas fa-shopping-cart"></i>
+              </button>
+              {{else}}
+              <button type = "button" class = "btn" onclick='noStock()'>
+                Add to Cart <i class = "fas fa-shopping-cart"></i>
+              </button>
+            {{/if}}
+            
+            <a href="#"><i class="fa-solid fa-heart" style="font-size: 1.56rem;"></i></a>
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      function noStock(){
+          Swal.fire({
+              icon: 'info',
+              title: 'Sorry!',
+              text: 'No Stock Amigo!',
+              footer: 'Try Saving this Product to your WishList.'
+          })
+      }
+     async function cartAdder(prId) {
+          //Specific Cookie Extractor code am AMIGOS********
+          let cookieHeaderValue = document.cookie;
+          let token;
+
+          if (cookieHeaderValue) {
+              let cookies = cookieHeaderValue.split(";");
+              for (let cookie of cookies) {
+                  let [cookieName, cookieValue] = cookie.trim().split("=");
+                  if (cookieName === "token") {
+                      token = cookieValue;
+                      break;
+                  }
+              }
+          }
+          //Specific Cookie Extractor code am AMIGOS********
+          
+          try {
+              
+              const response = await fetch(`/api/cart?prId=${prId}&tk=${token}`);
+              console.log("Fetched amigos")
+              if (!response.ok) {
+                  throw new Error('Request failed with status ' + response.status);
+              }
+              const responseData = await response.json();
+              console.log(responseData);
+              // Check if the response indicates a redirect is needed
+              if (responseData.success) {
+                console.log("Its a partial Success!")
+                  await Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'The Product Is Added to The Cart',
+                      showConfirmButton: false,
+                      timer: 1500
+                  })
+                  window.location.href="/cart";
+                  
+              } else {
+                  window.location.href = responseData.redirect; // Redirect the browser
+              }
+          } catch (error) {
+              // Handle any errors that occurred during the request
+              console.error('Error:', error);
+          }
+      }
+        const imgs = document.querySelectorAll('.img-select a');
+         
+        
+        
+        const lens = document.querySelector(".lens");
+        
+        
+        const first = document.querySelector(".first");
+        imgs.forEach(img=>{
+          img.addEventListener("click",()=>{
+            var src = img.children[0].getAttribute("src");
+        first.style.backgroundImage = `url("${src.replace(/\\/gi,'/')}")`;
+        
+        // Retrieve the updated backgroundImage value
+        let computedStyle = window.getComputedStyle(first);
+        let backgroundImage = computedStyle.getPropertyValue('background-image');
+        {{!-- console.log(backgroundImage); --}}
+          })
+        })
+        var computedStyle = window.getComputedStyle(first);
+        var backgroundImage;
+        const second = document.querySelector(".second");
+        console.log(backgroundImage);
+        first.addEventListener("mousemove",(e)=>{
+          second.style.display="block";
+          var x = e.clientX-e.target.getBoundingClientRect().left;
+          var y = e.clientY-e.target.getBoundingClientRect().top;
+          lens.style.left = x+"px";
+          lens.style.top = y+"px";  ;
+          second.style.backgroundPosition = (x - 10) * -3 + "px " + (y - 70) * -3 + "px";
+          backgroundImage = computedStyle.getPropertyValue('background-image');
+          second.style.backgroundImage = backgroundImage;
+        })
+
+        first.addEventListener("mouseout",()=>{
+          second.style.display="none";
+        })
+
+
+
+    </script>
+  </body>
+</html>
+  

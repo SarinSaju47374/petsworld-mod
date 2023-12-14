@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/styles/productAdd.css">
+</head>
+<body>
+    <section class="admin-content">
+        <button class="admin-content-btn">
+            Edit Product
+        </button>
+        <form action="/ctgry-view" method="POST" id="updateForm">
+            <input type="text" name="oid" value="{{ctgry._id}}">
+            <input type="text" name="ctgryName" placeholder="Enter the Category Name.." value="{{ctgry.ctgryName}}">
+           
+            <button class="admin-content-btn" onclick="showPopup(event)" type="button">
+                UPDATE
+            </button>
+        </form>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        async function showPopup(event) {
+            event.preventDefault();
+            await Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'The category is saved',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            document.getElementById('updateForm').submit();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ADMIN PAGE</title>
+    <link rel="stylesheet" href="/styles/adminLogin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ </head>
+ <body>
+    <form action="/admin" method="POST">
+        <section class="section1">
+            <input type="text" name="userName" placeholder="USERNAME">
+            <div class="psswd">
+                <input type="password" name="psswd" id="passwordField" placeholder="Enter Password..">
+                <button onclick="togglePasswordVisibility(event)" class="eye"><i class="fa-regular fa-eye-slash"></i></button>
+            </div>
+        </section>
+        <section class="section2">
+            <div class="logo-section">
+                <div class="logo">
+                    <img src="data:image/png;base64,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" alt="">
+                </div>
+                <h4>PetsWorld</h4>
+            </div>
+            <h2> WELCOME ADMIN</h2>
+            <button type="submit">Welcome</button>
+        </section>
+    </form>
+    <script>
+        let eye = document.querySelector(".eye");
+        function togglePasswordVisibility() {
+            event.preventDefault();
+            const passwordField = document.getElementById('passwordField');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eye.innerHTML='<i class="fa-regular fa-eye">';
+            } else {
+                passwordField.type = 'password';
+                eye.innerHTML='<i class="fa-regular fa-eye-slash"></i>';
+            }
+        }
+    </script>
+ </body>
+ </html>

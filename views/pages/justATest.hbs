@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Upload and Crop Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css">
+</head>
+<body>
+  <h1>Image Upload and Crop Form</h1>
+
+  <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
+    <label for="image-upload">Select Images:</label>
+    <input type="file" id="image-upload" name="images" multiple accept="image/*" required>
+    
+    <label for="aspect-ratio">Select Aspect Ratio:</label>
+    <select id="aspect-ratio" name="aspectRatio">
+      <option value="1">1:1</option>
+      <option value="16/9">16:9</option>
+      <option value="4/3">4:3</option>
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js"></script>
+  <script>
+    const imageUpload = document.getElementById('image-upload');
+    const aspectRatioSelect = document.getElementById('aspect-ratio');
+
+    imageUpload.addEventListener('change', function (event) {
+      const files = event.target.files;
+      const imagePreviews = document.getElementById('image-previews');
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          const image = new Image();
+          image.src = e.target.result;
+          image.classList.add('image-preview');
+
+          image.onload = function () {
+            const cropper = new Cropper(image, {
+              aspectRatio: aspectRatioSelect.value,
+              viewMode: 1,
+              minCropBoxWidth: 50,
+              minCropBoxHeight: 50,
+              ready: function () {
+                cropper.crop();
+              },
+            });
+
+            cropper.imageData = {
+              originalImage: e.target.result,
+              file: file,
+            };
+
+            imagePreviews.appendChild(image);
+          };
+        };
+
+        reader.readAsDataURL(file);
+      }
+    });
+
+    aspectRatioSelect.addEventListener('change', function () {
+      const imagePreviews = document.getElementsByClassName('image-preview');
+      for (let i = 0; i < imagePreviews.length; i++) {
+        const image = imagePreviews[i];
+        const cropper = image.cropper;
+        cropper.setAspectRatio(aspectRatioSelect.value);
+        cropper.crop();
+      }
+    });
+
+    const uploadForm = document.getElementById('upload-form');
+
+    uploadForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(this);
+
+      const imagePreviews = document.getElementsByClassName('image-preview');
+      for (let i = 0; i < imagePreviews.length; i++) {
+        const image = imagePreviews[i];
+        const cropper = image.cropper;
+        const canvas = cropper.getCroppedCanvas();
+        const blob = canvas.toDataURL('image/jpeg', 1);
+
+        const croppedFile = dataURLtoFile(blob, `cropped_image_${i}.jpeg`);
+        formData.append('croppedImages', croppedFile);
+      }
+
+      fetch('/upload', {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'cropped_images.zip';
+          link.click();
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    function dataURLtoFile(dataURL, filename) {
+      const arr = dataURL.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    }
+  </script>
+</body>
+</html>

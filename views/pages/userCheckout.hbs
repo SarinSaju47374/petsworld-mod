@@ -1,0 +1,125 @@
+<link rel="stylesheet" href="/styles/userCheckout.css"> 
+ 
+<div class="page" style="color:rgb(224, 168, 66);margin:0.45rem auto 0 auto;font-size:1.5rem;font-weight:900;letter-spacing:.45rem;display:flex;align-items:center;height:4rem;overflow:hidden;">
+    <img src="https://png.pngtree.com/png-vector/20230120/ourmid/pngtree-veterinary-design-vet-clipart-puppy-cute-cat-logo-png-image_6565444.png" alt="" style="width:8rem;">
+    CHECKOUT
+</div>
+<div class="checkout-bs-page">
+    <div class="checkout-bs-form">
+        <form action="#">
+            {{#if addr}}
+                <div class="country">
+                    <input type="text" name="country" placeholder="Country/Region" value="{{addr.country}}" readonly>
+                </div>
+                <div class="fullName">
+                    <input type="text" name="fname" placeholder="FirstName" value="{{addr.fName}}" readonly> 
+                    <input type="text" name="lname" placeholder="LastName" value="{{addr.lName}}" readonly> 
+                </div>
+                <div class="address"><textarea id="message" name="message" rows="4" cols="40" placeholder="Address" readonly>{{addr.addr}}</textarea></div>
+                <div class="add-more">
+                    <input type="text" name="city input" placeholder="City" value="{{addr.city}}" readonly>
+                    <input type="text" name="state input" placeholder="State" value="{{addr.state}}" readonly>
+                    <input type="text" name="pincode input" placeholder="Pincode" value="{{addr.pinCode}}" readonly>
+                </div>
+                <div class="phn">
+                    <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" placeholder="PhoneNumber" value="{{addr.ph}}" readonly>       
+                </div>
+                {{else}}
+                    <div class="noAddr" style="margin-bottom:1rem">
+                        <img src="https://cdni.iconscout.com/illustration/premium/thumb/delivery-boy-4799206-3998129.png?f=webp" style="width:5rem;" alt="">
+                        <h3 style="margin-bottom:1rem;">No address Added !</h3>
+                    </div>
+            {{/if}}
+            <div class="action-frm">
+                {{#if cid}}
+                    <a href="#" onclick="continueShipping(event, '/cart/pymnt/cid/{{cid}}')">Continue Shipping</a>
+                {{/if}}
+                {{#if iid}}
+                    <a href="#" onclick="continueShipping(event, '/cart/pymnt/iid/{{iid}}')">Continue Shipping</a>
+                {{/if}}
+            </div>
+            <a href="/address" class="changeAdd">Change/Add Adress</a>
+            <a href="/cart" class="bck-cart"><i class="fa-solid fa-caret-left"></i> Back to cart</a>
+        </form>
+    </div>
+    <div class="card-det">
+    <div class="top-col">
+        <div class="cart">
+            <div class="cart-header">
+                <div class="hd products">Products</div>
+                <div class="hd price">Price</div>
+                <div class="hd quantity">Quantity</div>
+              
+            </div>
+            <div class="cart-body">
+                {{#each item}}
+                    <div class="cart-row">
+                        <div class="td products">
+                            <img src="{{this.productId.photo.[0].filepath}}" alt="">
+                            <div class="prod-det">
+                                <h3>{{this.productId.productName}}
+                                </h3>
+                                <p>{{this.productId.brandName}}</p>
+                            </div>
+                        </div>
+                        <div class="td price">Rs {{this.productId.salePrice}}</div>
+                        <div class="td quantity"><input type="number" class="mobile-input" value="{{this.quantity}}" placeholder="Qnty" readonly></div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="bottom-col">
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+             <div class="subTotal">
+                <span>Sub Total:</span>
+                <h5>Rs {{calculateTotal item}}</h5>
+             </div>
+             <div class="shipping">
+                <span>Shipping:</span>
+                <h5>Free</h5>
+             </div>
+             <div class="total">
+                <span>Total:</span>
+                <h5>Rs {{calculateTotal item}}</h5>
+             </div> 
+        </div>
+    </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+<script>
+    let i=0;
+    let placeholder="";
+    const txt="Search in Cart....";
+    const speed=120;
+    {{!-- function type(){
+        placeholder+=txt.charAt(i);
+        if(i<txt.length){
+            document.querySelector(".search-cont input").setAttribute("placeholder",placeholder)
+            i++;
+        }else{
+             i=0;
+             placeholder="";
+        }
+        setTimeout(type,speed);
+    }
+    type();  --}}
+    function continueShipping(event, url) {
+        event.preventDefault();
+        
+        // Check if the form is filled
+        const form = document.getElementById('checkoutForm');
+        console.log(document.querySelector(".noAddr"))
+        if (!document.querySelector(".noAddr")) {
+            window.location.href = url;
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Your Address is missing!',
+            })
+        }
+    }
+</script>

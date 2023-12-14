@@ -1,0 +1,191 @@
+ <main>
+<h1>ADD CATEGORIES & SUBCATEGORIES</h1>
+
+{{!-- Product Add --}}
+
+<div class="form-admin">
+    <h2>Add a CATEGORY</h2>
+     <form method="POST" id="ctgryFrm">
+        <input type="text" name="ctgry" placeholder="Enter the Product Name.." required>
+        <button class="form-btn" type="submit">
+            ADD
+        </button>
+    </form>
+</div>
+<div class="form-admin">
+    <h2>Add a SUB-CATEGORY</h2>
+     <form method="POST" enctype="multipart/form-data" id="subCtgryFrm" required>
+        <input type="text" name="subCtgry" placeholder="Enter the Sub-Category Name.." required>
+        <select name="ctgryId" id="ctgry">
+           
+            //Dynamic Data
+        </select>
+        <div class="file-input-wrapper">
+            <label for="file-input" class="file-label">
+            <input type="file" id="file-input" name="photo" accept=".jpeg, .jpg, .png, .svg, .webp" multiple onchange="updateFileLabelText(this)" required>
+            Choose Files
+            </label>
+        </div>
+        <button class="form-btn" type="submit">
+            ADD
+        </button>
+    </form>
+</div>
+
+{{!-- END OF ORDERS --}}
+</main>
+
+{{!-- END OF MAIN --}}
+
+<div class="right">
+    <div class="top">
+        <button id="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="theme-toggler">
+            <i class="fa-solid fa-sun active"></i>
+            <i class="fa-solid fa-moon"></i>
+        </div>
+        <div class="profile">
+            <div class="info">
+                <p>Hey , <b>Sarin </b></p>
+                <small class="text-muted">ADMIN</small>
+            </div>
+            <div class="profile-photo">
+                <img src="/images/profile.jpg" alt="#">
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+<script src="/JS/adminContent.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+<script>
+    const sideBarOpts = document.querySelectorAll(".sidebar a");
+    sideBarOpts.forEach(a=>{
+        a.classList.remove("active");
+    })
+    sideBarOpts[7].classList.add("active");
+</script>
+<script>
+    const form = document.getElementById('subCtgryFrm');
+    const ctgryForm = document.getElementById('ctgryFrm');
+
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        // Create FormData object to collect form data
+        const formData = new FormData(form);
+
+        try {
+            // Send form data using Fetch POST request
+            const response = await fetch('/ctgry-add/subCtgry', {
+                method: 'POST',
+                body: formData
+            });
+
+            // Handle response
+            if(!response.ok) console.log("Form not Submitted")
+            let success = await response.json();
+            if(success.success){
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'SubCategory Is Added',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No Category is Added yet!',
+                    footer: 'Add Category First!'
+                })
+            }
+                
+            
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+    ctgryForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        // Create FormData object to collect form data
+        const jsonObject = {};
+        let formData = new FormData(ctgryForm);
+        formData.forEach((value, key) => {
+            jsonObject[key] = value;
+        });
+
+        const jsonBody = JSON.stringify(jsonObject);
+        console.log(jsonBody);
+        try {
+            // Send form data using Fetch POST request
+            const response = await fetch('/ctgry-add/ctgry', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonBody
+            });
+
+            // Handle response
+            if(!response.ok) console.log("Form not Submitted")
+            let success = await response.json();
+            if(success.success){
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Category Is Added',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                run();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went Wrong!',
+                    footer: 'Check it out Amigo!'
+                })
+            }
+                
+            
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded",()=>{
+        run();
+    })
+    async function run(){
+        try{
+            let data = await fetch("/ctgry-add/fetch");
+            let info = await data.json();
+            
+            if(info && info.length>0){
+                document.getElementById("ctgry").innerHTML="";
+                info.forEach(val=>{
+                    document.getElementById("ctgry").innerHTML+=`<option value="${val._id}">${val.name}</option>`
+                })
+            }else{
+                 
+                document.getElementById("ctgry").innerHTML="<option value=null>No Category</option>"
+            }
+
+        }catch(err){
+            console.log(err);
+        }
+    }
+</script>
+
+ 
+ 
+   
+
+ 

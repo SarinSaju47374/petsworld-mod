@@ -1,0 +1,302 @@
+<style>
+    #mychart{
+        width:200px;
+    }
+</style>
+<main>
+<h1>Sales Report</h1>
+ 
+ 
+{{!-- Product Add --}}
+
+    <div class="table-admin">
+        <h2>View the Report</h2> 
+         <canvas id="myChart"></canvas>
+         
+         <form action="#" method="POST" onsubmit="submitFrm(event)" class="filter">
+            <select name="timeFrame" class="action" id="timeFrame">
+                <option class="form-btn opt" disabled value="weekly">Select</option>
+                <option class="form-btn opt" value="weekly">Weekly</option>
+                <option class="form-btn opt" value="monthly">Monthly</option>
+                <option class="form-btn opt" value="yearly">Yearly</option>
+            </select>
+            <div class="date">
+                <input type="date" name="startDate" id="startDate">
+            </div>
+            <div class="date">
+                <input type="date" name="endDate" id="endDate">
+            </div>
+            <button class="form-btn">
+                Apply
+            </button>
+         </div>
+         </form> 
+    </div>
+    <div class="preview" style="margin-top:2rem;text-align:center">
+        <div class="table" id="table">
+         <table id="example" class="display nowrap" style="width:100%">
+
+            <thead>
+            <tr>
+                <th>orderId</th>
+                <th>Order Date</th>
+                <th>Full Name</th>
+                <th>Product Name</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="reportData">
+                <td colspan="6"> Generate the Data by Clicking the Above Filters</td>
+             {{!-- DYNAMIC DATA --}}
+            </tbody>
+        </table>
+        <button class="form-btn" style="margin-top:1rem;" onclick="exportToPDF()"> Download </button>
+    </div>
+ 
+</main>
+
+{{!-- END OF MAIN --}}
+
+<div class="right">
+    <div class="top">
+        <button id="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="theme-toggler">
+            <i class="fa-solid fa-sun active"></i>
+            <i class="fa-solid fa-moon"></i>
+        </div>
+        <div class="profile">
+            <div class="info">
+                <p>Hey , <b>Sarin </b></p>
+                <small class="text-muted">ADMIN</small>
+            </div>
+            <div class="profile-photo">
+                <img src="/images/profile.jpg" alt="#">
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+<script src="
+https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js
+"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/2HHi0w/7+B/1JsXIX3DmyBcsGpT3/BsuZMZf+6mAr0vP81syWtfynHJ69JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" referrerpolicy="no-referrer"></script>    
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+    
+ <script>
+    //Date Validation
+    const endDateInput = document.getElementById('endDate');
+    const startDateInput = document.getElementById('startDate');
+    const currentDate = new Date().toISOString().split('T')[0];
+    const tBody = document.getElementById("reportData");
+    startDateInput.max = currentDate;
+    endDateInput.max = currentDate;
+    //Date Validation
+
+   const ctx = document.getElementById('myChart');
+    const filter = document.querySelector(".filter")
+    // Initial data for monthly sales
+    let labels = ['Loading'];
+    let data = ['loading'];
+
+    // Initial chart configuration
+    const chartConfig = {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+        label: 'Sales',
+        data: data,
+        borderWidth: 1,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)'
+        }]
+    },
+    options: {
+        scales: {
+        y: {
+            beginAtZero: true
+        }
+        }
+    }
+    };
+
+    // Create the chart
+    const chart = new Chart(ctx, chartConfig);
+
+   
+    {{!-- function exportToExcel(){
+        const htmlTable = document.getElementById("table");
+        console.log(htmlTable);
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("User Data");
+        const headerRow = worksheet.addRow([]);
+        const headerCells = htmlTable.getElementsByTagName("th");
+        for(let i=0;i<headerCells.length;i++){
+            headerRow.getCell(i+1).value=headerCells[i].innerText
+        }
+        const rows = htmlTable.getElementsByTagName("tr");
+        for(let i=0;i<rows.length;i++){
+            const cells = rows[i].getElementsByTagName("td");
+            const rowData = [];
+            for(let j=0;j<cells.length;j++){
+                rowData.push(cells[j].innerText)
+            }
+            worksheet.addRow(rowData);
+        }
+        workbook.xlsx.writeBuffer().then((buffer)=>{
+            const blob = new Blob([buffer],{
+                type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            })
+            console.log(rows);
+            console.log(headerCells);
+            console.log(blob);
+            saveAs(blob,"output.xlsx")
+        })
+    } --}}
+  {{!-- function exportToExcel() {
+  const htmlTable = document.getElementById("table");
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("User Data");
+  const headerRow = worksheet.addRow([]);
+  const headerCells = htmlTable.getElementsByTagName("th");
+
+  for (let i = 0; i < headerCells.length; i++) {
+    headerRow.getCell(i + 1).value = headerCells[i].innerText;
+  }
+
+  const rows = htmlTable.getElementsByTagName("tr");
+  for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i].getElementsByTagName("td");
+    const rowData = [];
+    for (let j = 0; j < cells.length; j++) {
+      rowData.push(cells[j].innerText);
+    }
+    worksheet.addRow(rowData);
+  }
+
+  // Adjust column widths
+  const columns = worksheet.columns;
+  columns.forEach((column) => {
+    column.width = column.header && column.header.length < 12 ? 12 : column.header.length;
+  });
+
+  // Apply formatting
+  const headerFont = { bold: true };
+  headerRow.font = headerFont;
+  worksheet.views = [{ state: "frozen", xSplit: 0, ySplit: 1 }];
+
+  workbook.xlsx.writeBuffer().then((buffer) => {
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, "output.xlsx");
+  });
+} --}}
+   function exportToPDF() {
+    let timeFrame =document.getElementById("timeFrame").value;
+    let startDate =new Date(document.getElementById("startDate").value).toLocaleDateString();
+    let endDate =new Date(document.getElementById("endDate").value).toLocaleDateString();
+    const element = document.getElementById("example");
+    const opt = {
+        filename:`${timeFrame} SalesReport(${startDate} to ${endDate}).pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+    }
+
+
+    async function submitFrm(e){
+        e.preventDefault();
+        const jsonObject = {};
+        let formData = new FormData(filter);
+        formData.forEach((value, key) => {
+            jsonObject[key] = value;
+        });
+        try{
+            console.log("I am here !")
+            let data = await fetch('/analytics/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonObject),
+            });
+            let info = await data.json();
+            labels = Object.keys(info.data);
+            data = labels.map((label) => info.data[label])
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            console.log(info)
+            chart.update()
+            
+            tBody.innerHTML="";
+            info.orders.forEach(val=>{
+                tBody.innerHTML+=`
+                <tr>
+                    <td>${val.orderId}</td>
+                    <td>${new Date(val.date).toLocaleDateString()}</td>
+                    <td>${val.fullName}</td>
+                    <td>${val.productName}</td>
+                    <td>${val.salePrice}</td>
+                    <td>${val.status}</td>
+                </tr>
+                `;
+            })
+        }catch(err){
+            console.log(err)
+        }
+    }
+    document.addEventListener("DOMContentLoaded",async()=>{
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 35);
+        try{
+            console.log("I am here !")
+            let data = await fetch('/analytics/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    timeFrame: 'weekly',
+                    startDate: startDate.toISOString(),
+                    endDate: endDate.toISOString(),
+                }),
+            });
+            let info = await data.json();
+            labels = Object.keys(info.data);
+            data = labels.map((label) => info.data[label])
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update()
+        }catch(err){
+            console.log(err)
+        }
+    })
+
+
+ 
+</script>
+
+<script src="/JS/adminContent.js"></script>
+<script>
+    const sideBarOpts = document.querySelectorAll(".sidebar a");
+     
+
+    sideBarOpts.forEach(a=>{
+        a.classList.remove("active");
+    })
+    sideBarOpts[3].classList.add("active");
+</script>
+
+
+</body>
+</html>

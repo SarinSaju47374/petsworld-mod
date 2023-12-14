@@ -1,0 +1,332 @@
+* [33mcommit 00a2410587921446cefd8e7be8b8a23c4ce57f32[m[33m ([m[1;36mHEAD[m[33m)[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 28 18:31:05 2023 +0530
+[31m|[m 
+[31m|[m     Fixed few bugs in Order Management
+[31m|[m 
+* [33mcommit 175704688edb9c8ab7e7d14193387b441f622a88[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 28 17:21:26 2023 +0530
+[31m|[m 
+[31m|[m     Did few More Tweaks
+[31m|[m 
+* [33mcommit 684108f5db95c66a79fe5131f090e6d6171c836a[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 27 20:12:34 2023 +0530
+[31m|[m 
+[31m|[m     Created a Profile Page. Few tweaks left like Profile Photo
+[31m|[m 
+* [33mcommit 30996680149ea194b363fe0255524e77131d4979[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 27 13:12:49 2023 +0530
+[31m|[m 
+[31m|[m     order management in admin side is finished
+[31m|[m 
+* [33mcommit 034ec726479e21f968766ea4f3d9c3534f46173e[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 26 01:02:00 2023 +0530
+[31m|[m 
+[31m|[m     Order Mngmnt done in User Side. Few Tweaks Left
+[31m|[m 
+* [33mcommit 0d4bfc4b21fd957ebe4e53ab5b1c803f7a4ff655[m[33m ([m[1;32mmaster[m[33m)[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Fri Jun 23 16:53:41 2023 +0530
+[31m|[m 
+[31m|[m     Changes after week 12
+[31m|[m 
+* [33mcommit a016749dc4e17df5f4ed9363a91ccee53a583880[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 21 13:46:51 2023 +0530
+[31m|[m 
+[31m|[m     DID few Changes
+[31m|[m 
+* [33mcommit 06fd1289a19f73aeb8f040eb0444991039260f12[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 20 23:37:20 2023 +0530
+[31m|[m 
+[31m|[m     Applied the logic for order placement
+[31m|[m 
+* [33mcommit 1b986f682db282e8d22b7c6eeea0415cf74ce24d[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 17:51:11 2023 +0530
+[31m|[m 
+[31m|[m     login/signup/forgot is finsihed.Few tweaks left
+[31m|[m 
+* [33mcommit 9b02add4d926cb28da7faccea83ab5c60f84e58b[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 13:32:46 2023 +0530
+[31m|[m 
+[31m|[m     Ordniary login is Setup with proper validation
+[31m|[m 
+* [33mcommit d4e0f55a61884261ea774dce6985890176fde8e5[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 03:22:23 2023 +0530
+[31m|[m 
+[31m|[m     Did few validation tweaks
+[31m|[m 
+* [33mcommit 6c290058db1bf91dc8dc063bd7fa2d2f340a82b3[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Sun Jun 18 16:02:00 2023 +0530
+[31m|[m 
+[31m|[m     Added Validation in the LOGIN and SignUP
+[31m|[m 
+* [33mcommit fcac24fdc0b81170f334f47256285e91784a0d89[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Sat Jun 17 10:11:18 2023 +0530
+[31m|[m 
+[31m|[m     Added Few more files 17-06-2023
+[31m|[m 
+* [33mcommit 45c7d159bb4db39060d95ddf36f088411770f4ab[m
+  Author: Sarin Saju <sarinsaju99@gmail.com>
+  Date:   Wed Jun 14 10:24:09 2023 +0530
+  
+      I have updated the admin UI and few Tweaks
+* [33mcommit 00a2410587921446cefd8e7be8b8a23c4ce57f32[m[33m ([m[1;36mHEAD[m[33m)[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 28 18:31:05 2023 +0530
+[31m|[m 
+[31m|[m     Fixed few bugs in Order Management
+[31m|[m 
+* [33mcommit 175704688edb9c8ab7e7d14193387b441f622a88[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 28 17:21:26 2023 +0530
+[31m|[m 
+[31m|[m     Did few More Tweaks
+[31m|[m 
+* [33mcommit 684108f5db95c66a79fe5131f090e6d6171c836a[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 27 20:12:34 2023 +0530
+[31m|[m 
+[31m|[m     Created a Profile Page. Few tweaks left like Profile Photo
+[31m|[m 
+* [33mcommit 30996680149ea194b363fe0255524e77131d4979[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 27 13:12:49 2023 +0530
+[31m|[m 
+[31m|[m     order management in admin side is finished
+[31m|[m 
+* [33mcommit 034ec726479e21f968766ea4f3d9c3534f46173e[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 26 01:02:00 2023 +0530
+[31m|[m 
+[31m|[m     Order Mngmnt done in User Side. Few Tweaks Left
+[31m|[m 
+* [33mcommit 0d4bfc4b21fd957ebe4e53ab5b1c803f7a4ff655[m[33m ([m[1;32mmaster[m[33m)[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Fri Jun 23 16:53:41 2023 +0530
+[31m|[m 
+[31m|[m     Changes after week 12
+[31m|[m 
+* [33mcommit a016749dc4e17df5f4ed9363a91ccee53a583880[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 21 13:46:51 2023 +0530
+[31m|[m 
+[31m|[m     DID few Changes
+[31m|[m 
+* [33mcommit 06fd1289a19f73aeb8f040eb0444991039260f12[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 20 23:37:20 2023 +0530
+[31m|[m 
+[31m|[m     Applied the logic for order placement
+[31m|[m 
+* [33mcommit 1b986f682db282e8d22b7c6eeea0415cf74ce24d[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 17:51:11 2023 +0530
+[31m|[m 
+[31m|[m     login/signup/forgot is finsihed.Few tweaks left
+[31m|[m 
+* [33mcommit 9b02add4d926cb28da7faccea83ab5c60f84e58b[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 13:32:46 2023 +0530
+[31m|[m 
+[31m|[m     Ordniary login is Setup with proper validation
+[31m|[m 
+* [33mcommit d4e0f55a61884261ea774dce6985890176fde8e5[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 03:22:23 2023 +0530
+[31m|[m 
+[31m|[m     Did few validation tweaks
+[31m|[m 
+* [33mcommit 6c290058db1bf91dc8dc063bd7fa2d2f340a82b3[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Sun Jun 18 16:02:00 2023 +0530
+[31m|[m 
+[31m|[m     Added Validation in the LOGIN and SignUP
+[31m|[m 
+* [33mcommit fcac24fdc0b81170f334f47256285e91784a0d89[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Sat Jun 17 10:11:18 2023 +0530
+[31m|[m 
+[31m|[m     Added Few more files 17-06-2023
+[31m|[m 
+* [33mcommit 45c7d159bb4db39060d95ddf36f088411770f4ab[m
+  Author: Sarin Saju <sarinsaju99@gmail.com>
+  Date:   Wed Jun 14 10:24:09 2023 +0530
+  
+      I have updated the admin UI and few Tweaks
+* [33mcommit 00a2410587921446cefd8e7be8b8a23c4ce57f32[m[33m ([m[1;36mHEAD[m[33m)[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 28 18:31:05 2023 +0530
+[31m|[m 
+[31m|[m     Fixed few bugs in Order Management
+[31m|[m 
+* [33mcommit 175704688edb9c8ab7e7d14193387b441f622a88[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 28 17:21:26 2023 +0530
+[31m|[m 
+[31m|[m     Did few More Tweaks
+[31m|[m 
+* [33mcommit 684108f5db95c66a79fe5131f090e6d6171c836a[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 27 20:12:34 2023 +0530
+[31m|[m 
+[31m|[m     Created a Profile Page. Few tweaks left like Profile Photo
+[31m|[m 
+* [33mcommit 30996680149ea194b363fe0255524e77131d4979[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 27 13:12:49 2023 +0530
+[31m|[m 
+[31m|[m     order management in admin side is finished
+[31m|[m 
+* [33mcommit 034ec726479e21f968766ea4f3d9c3534f46173e[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 26 01:02:00 2023 +0530
+[31m|[m 
+[31m|[m     Order Mngmnt done in User Side. Few Tweaks Left
+[31m|[m 
+* [33mcommit 0d4bfc4b21fd957ebe4e53ab5b1c803f7a4ff655[m[33m ([m[1;32mmaster[m[33m)[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Fri Jun 23 16:53:41 2023 +0530
+[31m|[m 
+[31m|[m     Changes after week 12
+[31m|[m 
+* [33mcommit a016749dc4e17df5f4ed9363a91ccee53a583880[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 21 13:46:51 2023 +0530
+[31m|[m 
+[31m|[m     DID few Changes
+[31m|[m 
+* [33mcommit 06fd1289a19f73aeb8f040eb0444991039260f12[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 20 23:37:20 2023 +0530
+[31m|[m 
+[31m|[m     Applied the logic for order placement
+[31m|[m 
+* [33mcommit 1b986f682db282e8d22b7c6eeea0415cf74ce24d[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 17:51:11 2023 +0530
+[31m|[m 
+[31m|[m     login/signup/forgot is finsihed.Few tweaks left
+[31m|[m 
+* [33mcommit 9b02add4d926cb28da7faccea83ab5c60f84e58b[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 13:32:46 2023 +0530
+[31m|[m 
+[31m|[m     Ordniary login is Setup with proper validation
+[31m|[m 
+* [33mcommit d4e0f55a61884261ea774dce6985890176fde8e5[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 03:22:23 2023 +0530
+[31m|[m 
+[31m|[m     Did few validation tweaks
+[31m|[m 
+* [33mcommit 6c290058db1bf91dc8dc063bd7fa2d2f340a82b3[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Sun Jun 18 16:02:00 2023 +0530
+[31m|[m 
+[31m|[m     Added Validation in the LOGIN and SignUP
+[31m|[m 
+* [33mcommit fcac24fdc0b81170f334f47256285e91784a0d89[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Sat Jun 17 10:11:18 2023 +0530
+[31m|[m 
+[31m|[m     Added Few more files 17-06-2023
+[31m|[m 
+* [33mcommit 45c7d159bb4db39060d95ddf36f088411770f4ab[m
+  Author: Sarin Saju <sarinsaju99@gmail.com>
+  Date:   Wed Jun 14 10:24:09 2023 +0530
+  
+      I have updated the admin UI and few Tweaks
+* [33mcommit 00a2410587921446cefd8e7be8b8a23c4ce57f32[m[33m ([m[1;36mHEAD[m[33m)[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 28 18:31:05 2023 +0530
+[31m|[m 
+[31m|[m     Fixed few bugs in Order Management
+[31m|[m 
+* [33mcommit 175704688edb9c8ab7e7d14193387b441f622a88[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 28 17:21:26 2023 +0530
+[31m|[m 
+[31m|[m     Did few More Tweaks
+[31m|[m 
+* [33mcommit 684108f5db95c66a79fe5131f090e6d6171c836a[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 27 20:12:34 2023 +0530
+[31m|[m 
+[31m|[m     Created a Profile Page. Few tweaks left like Profile Photo
+[31m|[m 
+* [33mcommit 30996680149ea194b363fe0255524e77131d4979[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 27 13:12:49 2023 +0530
+[31m|[m 
+[31m|[m     order management in admin side is finished
+[31m|[m 
+* [33mcommit 034ec726479e21f968766ea4f3d9c3534f46173e[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 26 01:02:00 2023 +0530
+[31m|[m 
+[31m|[m     Order Mngmnt done in User Side. Few Tweaks Left
+[31m|[m 
+* [33mcommit 0d4bfc4b21fd957ebe4e53ab5b1c803f7a4ff655[m[33m ([m[1;32mmaster[m[33m)[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Fri Jun 23 16:53:41 2023 +0530
+[31m|[m 
+[31m|[m     Changes after week 12
+[31m|[m 
+* [33mcommit a016749dc4e17df5f4ed9363a91ccee53a583880[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Wed Jun 21 13:46:51 2023 +0530
+[31m|[m 
+[31m|[m     DID few Changes
+[31m|[m 
+* [33mcommit 06fd1289a19f73aeb8f040eb0444991039260f12[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Tue Jun 20 23:37:20 2023 +0530
+[31m|[m 
+[31m|[m     Applied the logic for order placement
+[31m|[m 
+* [33mcommit 1b986f682db282e8d22b7c6eeea0415cf74ce24d[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 17:51:11 2023 +0530
+[31m|[m 
+[31m|[m     login/signup/forgot is finsihed.Few tweaks left
+[31m|[m 
+* [33mcommit 9b02add4d926cb28da7faccea83ab5c60f84e58b[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 13:32:46 2023 +0530
+[31m|[m 
+[31m|[m     Ordniary login is Setup with proper validation
+[31m|[m 
+* [33mcommit d4e0f55a61884261ea774dce6985890176fde8e5[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Mon Jun 19 03:22:23 2023 +0530
+[31m|[m 
+[31m|[m     Did few validation tweaks
+[31m|[m 
+* [33mcommit 6c290058db1bf91dc8dc063bd7fa2d2f340a82b3[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Sun Jun 18 16:02:00 2023 +0530
+[31m|[m 
+[31m|[m     Added Validation in the LOGIN and SignUP
+[31m|[m 
+* [33mcommit fcac24fdc0b81170f334f47256285e91784a0d89[m
+[31m|[m Author: Sarin Saju <sarinsaju99@gmail.com>
+[31m|[m Date:   Sat Jun 17 10:11:18 2023 +0530
+[31m|[m 
+[31m|[m     Added Few more files 17-06-2023
+[31m|[m 
+* [33mcommit 45c7d159bb4db39060d95ddf36f088411770f4ab[m
+  Author: Sarin Saju <sarinsaju99@gmail.com>
+  Date:   Wed Jun 14 10:24:09 2023 +0530
+  
+      I have updated the admin UI and few Tweaks

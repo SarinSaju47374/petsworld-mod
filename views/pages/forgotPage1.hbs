@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pets World Login Page</title>
+    <link rel="stylesheet" href="/styles/userLogin.css" type="text/css">   
+</head>
+<body>
+    {{#if flag}}
+        <div class="popped"></div>
+    {{/if}}
+    <div class="wrapper" data-aos="zoom-out-down">
+        <div class="form">
+            <div class="form-section-1">
+                <div class="logo">
+                    <div class="logo-img"><img src="https://media.istockphoto.com/id/1324471626/sv/vektor/dog-love-simple-logo.jpg?s=612x612&w=0&k=20&c=QQi-J8_cHY0RIdbZgC_nZeI6qGT2SsA52Fo1jUmewWs=" alt=""></div>
+                    <h1>PETS WORLD</h1>
+                </div>
+                <form id="otpForm" action="#" method="POST">
+                    <input type="text" name="email" id="email" placeholder="Enter Your Email Address!" required>
+                     <div class="btns">
+                        <button type="submit" name="lgnBtn" value="otp-login" class="login-btn">Verify</button>
+                    </div>
+                    <p>
+                       <a href="/login">Login?</a>
+                    </p>
+                    <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ce8b1e76965389.5c7945b0cffef.gif" style="width:20rem" alt="!">
+                </form>
+                 
+    
+            </div>
+            <div class="form-section-2">
+                <div class="sign-in">
+                     <i class="fa-brands fa-google"></i>
+                    <i class="fa-brands fa-facebook-f"></i>
+                </div>
+            </div>
+        </div>
+        <div class="doggy">
+            <img src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/rockcms/2022-08/220805-border-collie-play-mn-1100-82d2f1.jpg" alt="">
+            <span class="title">
+                LOGIN PAGE
+            </span>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+<script>
+    let email = document.getElementById("email");
+    let mob = document.getElementById("mob");
+    const otpForm = document.getElementById("otpForm");
+    email.addEventListener("change",async function(){
+         const value  = this.value.trim();
+         const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+         this.setCustomValidity(''); // Reset any previous validation error
+         let dataD= await fetch("/api/users");
+         let data = await dataD.json();
+         
+         let user = data.users.find(val=>val.email==value);
+        
+        if (value && !isValidEmail) {
+            this.setCustomValidity('Please enter a valid email address');
+            this.reportValidity();
+        }
+        
+        if(user && user.isBlocked){
+            this.setCustomValidity("You are Blocked")
+            this.reportValidity();
+        }
+        if(user && !user.verified){
+            this.setCustomValidity('You are not Verified! Check your Mail!');
+            this.reportValidity();
+        }
+        if(!user){
+            this.setCustomValidity('You Havenot Registered');
+            this.reportValidity();
+        }
+    });
+    
+    otpForm.addEventListener("submit", async function(e) {
+            e.preventDefault(); // Prevent the default form submission behavior
+            
+            try {
+                const response = await fetch(`/login/forgot`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({email: e.target.email.value.trim()})
+                });
+                 
+                if (!response.ok) {
+                    throw new Error("Request failed with status: " + response.status);
+                }
+
+                const data = await response.json();
+                
+                
+                if (data.flag) {
+                    Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Reset Link Sent To Your Mail',
+                    showConfirmButton: false,
+                    timer: 3000
+                    })
+                } else {
+                    // Handle error or display message
+                }
+            } catch(err) {
+                console.log("Error:", err);
+            }
+        });
+
+    if(document.querySelector(".popped")){
+        Swal.fire({
+        title: 'Error!',
+        text: 'Check Your Password Amigo!',
+        icon: 'error',
+        confirmButtonText: 'OK'
+    })
+    }
+</script>
+</html>

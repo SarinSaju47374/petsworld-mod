@@ -1,0 +1,40 @@
+.admin-content{
+    margin-top:0;
+    height:32rem;
+    /* width:100%; */
+    display:flex;
+    justify-content: center;
+}
+.admin-content-btn{
+    background-color:var(--blue);
+    color:var(--light);
+    border: none;
+    height: 40px;
+    width:100px;
+    padding:5px;
+    border-radius:10px;
+}
+.admin-content form{
+    height:100%;
+    width:30rem;
+    display:flex;
+    flex-direction: column;
+    padding:0;
+    align-items:center;
+    justify-content:space-between;
+    /* text-align: center; */
+    padding-top:12px;
+    padding-bottom:12px;
+}
+form input{
+    width:25rem;
+    border-radius:8px;
+    height:30px;
+    border:none;
+    outline:none;
+    padding-left: 24px;
+    margin-bottom: 1rem;
+}
+form input:last-child{
+    padding:0;
+}

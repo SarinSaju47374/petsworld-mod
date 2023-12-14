@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="/styles/userOrderHistory.css">
+ 
+<div class="page" style="color:rgb(224, 168, 66);margin:0.45rem auto;font-size:1rem;font-weight:900;letter-spacing:.45rem;display:flex;align-items:center;justify-content:center;height:4rem;overflow:hidden;width:90%">
+    <img src="https://png.pngtree.com/png-vector/20230120/ourmid/pngtree-dog-logo-veterinary-design-clipart-vet-golden-retriever-puppy-clinic-png-image_6565449.png" alt="" style="width:8rem;">
+    WALLET-TRANSACTION-HISTORY
+</div> 
+<div class="card-det">
+    <div class="left-col">
+        <div class="order">
+            <div class="order-header">
+                <div class="hd products">Transaction Type
+                </div>
+                <div class="hd orderId">Date</div>
+                <div class="hd status">Amount</div>
+            </div>
+            <div class="order-body">
+                {{#if hist}}
+                    {{#each hist}}
+                        <div class="order-row">
+                            <div class="td products">
+                                <h4>{{this.type}}</h4>
+                            </div>
+                        
+                            <div class="td orderId" style="display:flex;justify-content:center">{{convert this.date}}</div>
+                            <div class="td status" style="display:flex;flex-direction:column;align-items:center;">
+                                Rs {{this.amount}}
+                            </div>
+                        </div>
+                    {{/each}}
+                    {{else}}
+                        <div class="order-row" style="display:flex;justify-content:center">
+                             NO TRANSACTIONS YET ....
+                        </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    
+</script>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/userNav.css">
+</head>
+<body>
+  <nav>
+      <div class="logo-section">
+        <div class="logo">
+          <a href="/">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwy0pJwLNGxmmFiMpk6AvgrLh1FgPK8i16Zg&usqp=CAU"
+              alt=""
+            />  
+          </a>
+        </div>
+        PETS WORLD
+      </div>
+      
+      <div class="menu-section">
+        <ul>
+          <ul class="dropdown">
+            <li><a href="/products?cat=DOG">DOG</a>
+                <ul>
+                    <li><a href="/products?cat=DOG&sub=TOYS">Toys</a></li>
+                    <li><a href="/products?cat=DOG&sub=FOOD">Food</a></li>
+                    <li><a href="/products?cat=DOG&sub=TREATS">Treats</a> </li>
+                </ul>
+            </li>
+          </ul>
+          <ul class="dropdown">
+            <li><a href="/products?cat=CAT">CAT</a>
+                <ul>
+                    <li><a href="/products?cat=CAT&sub=TOYS">Toys</a></li>
+                    <li><a href="/products?cat=CAT&sub=FOOD">Food</a></li>
+                    <li><a href="/products?cat=CAT&sub=TREATS">Treats</a> </li>
+                </ul>
+            </li>
+          </ul>
+          
+          <li class="dropdown"><a href="/ORDER-HISTORY">ORDERS</a></li>
+        </ul>
+      </div>
+      <div class="full-search">
+        <div class="search-cont home">
+          <input type="text" placeholder="Search Products...">
+          {{!-- <a href=""><i class="fa-solid fa-magnifying-glass"></i></a></i> --}}
+        </div>
+        <ul>
+             {{!-- Dynamic Data --}}
+        </ul>
+      </div>
+      <div class="menu-icon">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+      <div class="option-section">
+        <div class="cart">
+          
+          <a href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+        <div class="wishlist">
+          <a href="/wishlist"><i class="fa-solid fa-heart"></i></a>
+        </div>
+        {{#if loggedIn}} 
+          <ul class="dropdown" >
+            <li> 
+            <a href="#"><i class="fa-solid fa-user"></i></a>
+                <ul>
+                    <li><a href="/login">Logout</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                </ul>
+            </li>
+          </ul>
+        {{else}}
+          <ul class="dropdown" >
+            <li> 
+            <a href="#" ><i class="fa-solid fa-user"></i></a>
+                <ul>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                </ul>
+            </li>
+          </ul>
+        {{/if}}
+
+      </div>
+      <div class="menu-section-mob">
+        <ul>
+          <li>
+            <a href="#"> <i class="fa-solid fa-dog"></i> DOG</a>
+            <div class="level-1">
+              <ul>
+                <li><a href="/products?cat=DOG&sub=FOOD">FOOD</a></li>
+                <li><a href="/products?cat=DOG&sub=TOYS">TOYS</a></li>
+                <li><a href="/products?cat=DOG&sub=TREATS">TREATS</a></li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-cat"></i> CAT</a>
+            <div class="level-1">
+              <ul>
+                <li><a href="/products?cat=CAT&sub=FOOD">FOOD</a></li>
+                <li><a href="/products?cat=CAT&sub=TOYS"TOYS</a></li>
+                <li><a href="/products?cat=CAT&sub=TREATS"TREATS</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a href="/wishlist"> <i class="fa-solid fa-heart"></i> Wishlist</a>
+          </li>
+          <li>
+            <a href="#">
+              <div class="cart">
+                <span id="mob-cart">3</span>
+                <a href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+              Cart</a
+            >
+          </li>
+          {{#if loggedIn}} 
+              <li><i class="fa-solid fa-right-from-bracket"></i> <a href="/login">Logout</a></li>
+              <li><a href="/profile"><i class="fa-solid fa-user"></i> Profile</a></li>
+          {{else}}
+              <li><i class="fa-solid fa-right-to-bracket"></i><a href="/login">Login</a></li>
+              <li><i class="fa-regular fa-id-card"></i><a href="/register">Register</a></li>
+          {{/if}}
+        </ul>
+      </div>
+    </nav>
+    
+
+    <script>
+       
+      let menu = document.querySelector(".menu-icon");
+      let menuSection = document.querySelector(".menu-section-mob");
+      let lists = document.querySelectorAll("nav .menu-section-mob>ul li");
+
+      menu.addEventListener("click", () => {
+        // alert("hello")
+        event.stopPropagation();
+        menuSection.classList.toggle("show");
+      });
+      menuSection.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+      document.addEventListener("click", () => {
+        menuSection.classList.remove("show");
+      });
+      lists.forEach((list) => {
+        list.addEventListener("click", (event) => {
+          // alert("hello")
+          event.stopPropagation();
+          list.children[1].classList.toggle("view");
+          list.children.classList.toggle("set");
+        });
+      });
+      function callMe(){
+       alert("Clicked");
+        fetch("/dog-food?cat=DOG&sub=FOOD")
+          .then(response => response.text())
+          .then(data => {
+            // Process the fetched data here
+            console.log(data);
+          })
+          .catch(error => {
+            // Handle any errors that occur during the fetch
+            console.error('Error:', error);
+          });
+
+      }
+      
+     document.addEventListener("DOMContentLoaded",async ()=>{
+
+      //Specific Cookie Extractor code am AMIGOS********
+      let cookieHeaderValue = document.cookie;
+      let token = null;
+
+      if (cookieHeaderValue) {
+        let cookies = cookieHeaderValue.split(";");
+        for (let cookie of cookies) {
+          let [cookieName, cookieValue] = cookie.trim().split("=");
+          if (cookieName === "token") {
+            token = cookieValue;
+            break;
+          }
+        }
+      }
+      //Specific Cookie Extractor code am AMIGOS********
+
+      if(token){
+        try {
+        let response = await fetch(`/data/cartNumber/${token}`);
+        if (!response.ok) {
+          // handle error response
+        } else {
+          let data = await response.json();
+          console.log(data);
+          if (data.qnty){
+            document.querySelector(".option-section .cart").innerHTML+=`<span class="cart-number" data-aos="flip-left">${data.qnty}</span>`
+            document.getElementById("mob-cart").innerHTML=`${data.qnty}`
+          }else{
+            document.querySelector(".option-section .cart").innerHTML+=`<span class="cart-number" data-aos="flip-left">0</span>`
+            document.getElementById("mob-cart").innerHTML=`0`
+          }
+        }
+      } catch (err) {
+        console.log("Err: ", err);
+      }
+      }else{
+        document.querySelector(".option-section .cart").innerHTML+=`<span class="cart-number" data-aos="flip-left">0</span>`
+      }
+     })
+
+    let search = document.querySelector(".search-cont input")
+    
+    let ul = document.querySelector(".full-search ul")
+    search.addEventListener("input",function(){
+        srch(`/api/products?s=${search.value}`)
+    })
+    search.addEventListener("blur", function() {
+      // Delay hiding the ul to allow click events on the <a> tag to work
+      setTimeout(function() {
+        ul.innerHTML = "";
+      }, 200);
+    });
+
+    async function srch(url){
+      ul.innerHTML="";
+      try{        
+        let data=await fetch(url);
+        let pr = await data.json();
+        pr.products.forEach(p=>{
+          ul.innerHTML+=`<li><a href="/product-descr?oid=${p._id}">${p.productName}</a></li>`
+        })
+      }catch(err){
+        console.log(err);
+      }
+    }
+    </script>
+    
+</body>
+</html>

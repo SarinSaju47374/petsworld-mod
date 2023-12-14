@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Invoice</title>
+    <style>
+         
+        img {
+            height: 8rem;
+        }
+        .order-invoice {
+            max-width: 600px;
+            padding: 20px;
+            background-color: rgba(248, 255, 255, 0.949);
+            border-radius:2rem;
+            border:rgb(0, 123, 255) solid 1px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .order-header h1 {
+            font-size: 24px;
+        }
+        .order-header span{
+            font-size: .8rem;
+        }
+
+        .order-details {
+            margin-bottom: 30px;
+        }
+
+        .order-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .order-details th,
+        .order-details td {
+            padding: 10px;
+            text-align: center;
+            overflow: hidden;
+            
+        }
+        .order-details tbody td{
+            height:4rem;
+        }
+        .order-details td img{
+             width:100%;
+             height:100%;
+             object-fit: cover;
+        }
+
+        .order-details th {
+            background-color: #1c3e5a;
+            color: white;
+        }
+
+        .order-status {
+            margin-bottom: 30px;
+        }
+
+        .order-status .status-slider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: black;
+            
+        }
+
+        .order-status .status-slider .slider-item {
+            flex: 1;
+            text-align: center;
+            font-size: .75rem;
+            padding: 10px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            background-color: #f5f5f5;
+            height: 2rem;
+            display: grid;
+            place-items: center;
+        }
+
+        .order-status .status-slider .slider-item.active {
+            background-color: orange;
+            font-weight: bold;
+            color: white;
+        }
+        .order-status .status-slider .slider-item.active2 {
+            background-color: rgb(51, 255, 0);
+            font-weight: bold;
+            color: white;
+        }
+
+        .thank-you {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+       .cancel-order-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+          transition:all 300ms ease;
+        }
+      .cancel-order-btn:hover {
+             opacity:0.8;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="my-canvas" style="z-index:9"></canvas>
+    <div class="order-invoice" data-aos="flip-left" data-oid="{{order._id}}">
+        <div class="order-header">
+            <h1>Order Invoice</h1>
+            <span>Order ID: #PTSW{{order._id}}</span>
+            <span>Date: {{convert order.date}}</span>
+            <span>Status: {{order.status}}</span>
+        </div>
+
+        <div class="order-details">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Image</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each order.products}}
+                        <tr>
+                            <td><img src="{{this.productId.photo.[0].filepath}}.png" alt="Product 2"></td>
+                            <td>{{this.productId.productName}}</td>
+                            <td>Rs {{this.productId.salePrice}}</td>
+                            <td>{{this.quantity}}</td>
+                        </tr>
+                    {{/each}}
+                    <!-- Add more rows for other products -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="order-total">
+            <h3>Total Price: Rs {{order.totalPrice}}</h3>
+        </div>
+
+        <div class="order-status">
+            <h2>Order Status</h2>
+            <div class="status-slider">
+                
+            </div>
+        </div>
+
+        <div class="container">
+            <a href="/admin/orders" class="cancel-order-btn" style="background-color:green"> Back to Home</a>
+        </div>
+    </div>
+    {{!-- /*To make it work i used app.use(express.static(node_modules))*/ --}}
+    <script src="/confetti-js/dist/index.min.js"></script>
+    <script> 
+        var statusSlider = document.querySelector(".status-slider");
+        var oid = document.querySelector(".order-invoice").dataset.oid;
+        let initStatus = `
+                <div class="slider-item active">Order Placed</div>
+                <div class="slider-item">Order Shipped</div>
+                <div class="slider-item">Order On-Route</div>
+                <div class="slider-item">Order Delivered</div>`;
+       async function fetchStatus() {
+            // Simulated asynchronous API call to fetch the status
+          
+                let response  = await fetch(`/cart/order/real-time/${oid}`);
+                if(!response.ok) return ;
+
+                const status = await response.json();
+                console.log(status);
+
+                if (!status.valid) return ;
+                // Update the status slider HTML based on the received status
+                switch (status.status) {
+                case "orderPlaced":
+                    statusSlider.innerHTML = `
+                    <div class="slider-item active">Order Placed</div>
+                    <div class="slider-item">Order Shipped</div>
+                    <div class="slider-item">Order On-Route</div>
+                    <div class="slider-item">Order Delivered</div>`;
+                    break;
+                case "orderShipped":
+                    statusSlider.innerHTML = `
+                    <div class="slider-item">Order Placed</div>
+                    <div class="slider-item active">Order Shipped</div>
+                    <div class="slider-item">Order On-Route</div>
+                    <div class="slider-item">Order Delivered</div>`;
+                    break;
+                case "orderOnRoute":
+                    statusSlider.innerHTML = `
+                    <div class="slider-item">Order Placed</div>
+                    <div class="slider-item">Order Shipped</div>
+                    <div class="slider-item active">Order On-Route</div>
+                    <div class="slider-item">Order Delivered</div>`;
+                    break;
+                case "orderDelivered":
+                    statusSlider.innerHTML = `
+                    <div class="slider-item">Order Placed</div>
+                    <div class="slider-item">Order Shipped</div>
+                    <div class="slider-item">Order On-Route</div>
+                    <div class="slider-item active2">Order Delivered</div>`;
+                    break;
+                case "orderCancelled":
+                    statusSlider.innerHTML = `
+                     <h2 style="color:red">Order Cancelled</h2>`;
+                    break;
+                default:
+                    break;
+                }
+             
+            }
+
+// Initial fetch of status
+            document.addEventListener("DOMContentLoaded",()=>{
+                fetchStatus();
+                {{!-- statusSlider.innerHTML="amigos" --}}
+                        // Fetch the status every 5 seconds
+                let id=setInterval(fetchStatus, 5000);
+                clearInterval(id);
+            })
+        
+    </script>
+</body>
+</html>

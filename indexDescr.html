@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .sidebar-container {
+      position: fixed;
+      top:10rem;
+      left: 0;
+      width: 13rem;
+      padding: 20px;
+      background-color: #0c7de057;
+      border-radius: 15px;
+    }
+
+    .sidebar-container h2 {
+      margin-top: 0;
+    }
+
+    .category-section select {
+      width: 100%;
+      margin-bottom: 10px;
+      height:1.5rem;
+      outline:none;
+      border-radius: 12px;
+    }
+
+    .price-section {
+      margin-top: 20px;
+    }
+
+    .slider-container input[type="range"] {
+      width: 100%;
+    }
+
+    .price-inputs input[type="number"] {
+      width: 80px;
+    }
+
+    .filter-section label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .number-group {
+      flex: 1 0 auto;
+      text-align: right;
+      height: 30px;
+      font-weight: 300;
+      font-size: 13px;
+      color: #fff;
+      width:10rem;
+      display:flex;
+      justify-content:space-between;
+    }
+
+    .number-group .number-input {
+      width: 36px;
+      height: 30px;
+      text-align: center;
+      color: #ffffff;
+      background-color: #3D3E3F;
+      border: 0;
+    }
+
+    .number-group .number-input:first-of-type {
+      margin-right: 7px;
+    }
+
+    .number-group .number-input:last-of-type {
+      margin-left: 7px;
+    }
+
+    .number-group .number-input::-webkit-outer-spin-button,
+    .number-group .number-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+   
+
+    .range-group {
+      position: relative;
+      flex: 0 0 100%;
+      height: 47px;
+      width:10rem;
+      margin:0;
+    }
+
+    .range-group .range-input {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      margin-bottom: 0;
+      -webkit-appearance: none;
+      width: 100%;
+      border-bottom: 0;
+    }
+
+    .range-group .range-input:focus {
+      outline: 0;
+    }
+
+    .range-group .range-input::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 2px;
+      cursor: pointer;
+      animation: .2s;
+      background: #3FAFFA;
+      border-radius: 1px;
+      box-shadow: none;
+      border: 0;
+    }
+
+    .range-group .range-input::-webkit-slider-thumb {
+      z-index: 2;
+      position: relative;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #3FAFFA;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -7px;
+    }
+
+    .range-group .range-input::-moz-range-track {
+      width: 100%;
+      height: 2px;
+      cursor: pointer;
+      animation: .2s;
+      background: #3FAFFA;
+      border-radius: 1px;
+      box-shadow: none;
+      border: 0;
+    }
+
+    .range-group .range-input::-moz-range-thumb {
+      z-index: 2;
+      position: relative;
+      box-shadow: 0px 0px 0px #000;
+      border: 1px solid #2497e3;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #3FAFFA;
+      cursor: pointer;
+    }
+
+    .range-group .range-input::-ms-track {
+      width: 100%;
+      height: 5px;
+      cursor: pointer;
+      animation: .2s;
+      background: transparent;
+      border-color: transparent;
+      color: transparent;
+    }
+
+    .range-group .range-input::-ms-fill-lower,
+    .range-group .range-input::-ms-fill-upper {
+      background: #3FAFFA;
+      border-radius: 1px;
+      box-shadow: none;
+      border: 0;
+    }
+
+    .range-group .range-input::-ms-thumb {
+      z-index: 2;
+      position: relative;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #3FAFFA;
+      cursor: pointer;
+    }
+
+    /* For demo purposes */
+    body {
+      background-color: #323334;
+    }
+
+    
+    .filter {
+    /*   margin: 0 auto; */
+      width:100%;
+    /*   max-width: 80%; */
+    }
+    #rangeSlider{
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      gap:1.5rem;
+      margin: 1rem auto;
+    }
+
+    /* //css */
+    
+
+  </style>
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./views/styles/userNav.css">
+</head>
+<body>
+  <nav>
+      <div class="logo-section">
+        <div class="logo">
+          <a href="/landing-page">
+            <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwy0pJwLNGxmmFiMpk6AvgrLh1FgPK8i16Zg&usqp=CAU"
+            alt=""
+          />
+          </a>
+        </div>
+        PETS WORLD
+      </div>
+      <div class="menu-icon">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+      <div class="menu-section">
+        <ul>
+          <ul class="dropdown">
+            <li><a href="#">DOG</a>
+                <ul>
+                    <li><a href="">Toys</a></li>
+                    <li><a href="">Food</a></li>
+                    <li><a href="#">Treats</a> </li>
+                    <li><a href="">Health Care</a></li>
+                </ul>
+            </li>
+          </ul>
+          <ul class="dropdown">
+            <li><a href="#">CAT</a>
+                <ul>
+                    <li><a href="">Toys</a></li>
+                    <li><a href="">Food</a></li>
+                    <li><a href="#">Treats</a> </li>
+                    <li><a href="">Health Care</a></li>
+                </ul>
+            </li>
+          </ul>
+          <li class="dropdown"><a href="#">COMBO PACK</a></li>
+          <li class="dropdown"><a href="#">LEARN WITH #PETSWORLD</a></li>
+          <li class="dropdown"><a href="/ORDER-HISTORY">ORDERS</a></li>
+          <li class="dropdown"><a href="#" onclick="callMe()">COUPONS</a></li>
+        </ul>
+      </div>
+      <div class="option-section">
+        <div class="cart">
+          
+          <a href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+        <div class="wishlist">
+          <a href="/wishlist"><i class="fa-solid fa-heart"></i></a>
+        </div>
+        {{#if loggedIn}}
+          <div class="user">
+            <a href=""><i class="fa-solid fa-user"></i></a>
+          </div>
+        {{else}}
+          <div class="user">
+            <!-- Render different icon for non-logged in users -->
+            <a href="/login"><i class="fa-solid fa-right-to-bracket"></i></a>
+          </div>
+        {{/if}}
+
+      </div>
+      <div class="menu-section-mob">
+        <ul>
+          <li>
+            <a href="#"> <i class="fa-solid fa-dog"></i> DOG</a>
+            <div class="level-1">
+              <ul>
+                <li>FOOD</li>
+                <li>TOYS</li>
+                <li>HEALTH</li>
+                <li>TREATS</li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-cat"></i> CAT</a>
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-gifts"></i> COMBO PACK</a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa-brands fa-leanpub"></i> LEARN WITH #PETSWORLD</a
+            >
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-paw"></i> LEARN ABOUT BREEDS</a>
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-gift"></i> COUPONS</a>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a href="/wishlist"> <i class="fa-solid fa-heart"></i> Wishlist</a>
+          </li>
+          <li>
+            <a href="#">
+              <div class="cart">
+                <span>3</span>
+                <a href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+              Cart</a
+            >
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-right-to-bracket"></i> Login</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    
+    
+</body>
+</html>
+  <div class="sidebar-container">
+    <div class="category-section">
+      <h2>Category</h2>
+      <select id="category-select">
+        <option value="">All</option>
+        <option value="category1">Category 1</option>
+        <option value="category2">Category 2</option>
+        <option value="category3">Category 3</option>
+        <!-- Add more categories here -->
+      </select>
+    </div>
+  
+    <div class="price-section">
+      <h2>Price Range</h2>
+       
+  <!-- With number fields -->
+  <div class="filter level-filter level-req">
+    <div id="rangeSlider" class="range-slider">
+      <div class="number-group">
+        <input class="number-input" type="number" value="10" min="0" max="50" /> to 
+        <input class="number-input" type="number" value="80" min="0" max="80" />
+      </div>
+  
+      <div class="range-group">
+        <input class="range-input" value="10" min="1" max="100" step="1" type="range" />
+        <input class="range-input" value="80" min="1" max="100" step="1" type="range" />
+      </div>
+    </div>
+  </div><!-- // filter level-filter -->
+    </div>
+  
+    <div class="filter-section">
+      <h2>Filter</h2>
+      <label>
+        <input type="radio" name="filter-option" value="all" checked>
+        All
+      </label>
+      <label>
+        <input type="radio" name="filter-option" value="option1">
+        Option 1
+      </label>
+      <label>
+        <input type="radio" name="filter-option" value="option2">
+        Option 2
+      </label>
+      <!-- Add more filter options here -->
+    </div>
+  </div>
+  <canvas id="my-canvas"></canvas>
+  <script>
+    (function() {
+        var parent = document.querySelector("#rangeSlider");
+        if(!parent) return;
+
+        var
+        rangeS = parent.querySelectorAll("input[type=range]"),
+          numberS = parent.querySelectorAll("input[type=number]");
+
+        rangeS.forEach(function(el) {
+          el.oninput = function() {
+            var slide1 = parseFloat(rangeS[0].value),
+              slide2 = parseFloat(rangeS[1].value);
+
+            if (slide1 > slide2) {
+              [slide1, slide2] = [slide2, slide1];
+              // var tmp = slide2;
+              // slide2 = slide1;
+              // slide1 = tmp;
+            }
+
+            numberS[0].value = slide1;
+            numberS[1].value = slide2;
+          }
+        });
+        
+        numberS.forEach(function(el) {
+          el.oninput = function() {
+            var number1 = parseFloat(numberS[0].value),
+              number2 = parseFloat(numberS[1].value);
+
+            if (number1 > number2) {
+              var tmp = number1;
+              numberS[0].value = number2;
+              numberS[1].value = tmp;
+            }
+
+            rangeS[0].value = number1;
+            rangeS[1].value = number2;
+
+          }
+        });
+
+        })();   
+  </script>
+  <script src="node_modules/confetti-js/dist/index.min.js"></script>
+  <script>
+      var confettiElement = document.getElementById('my-canvas');
+var confettiSettings = { target: confettiElement };
+var confetti = new ConfettiGenerator(confettiSettings);
+confetti.render();
+  </script>
+</body>
+</html>

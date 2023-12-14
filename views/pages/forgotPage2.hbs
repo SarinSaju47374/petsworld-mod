@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pets World Forgot Page</title>
+    <link rel="stylesheet" href="/styles/userForgot.css" type="text/css">   
+</head>
+<body>
+    <div class="wrapper" data-aos="zoom-out-down">
+        <div class="form">
+            <div class="form-section-1">
+                <div class="logo">
+                    <div class="logo-img"><img src="https://media.istockphoto.com/id/1324471626/sv/vektor/dog-love-simple-logo.jpg?s=612x612&w=0&k=20&c=QQi-J8_cHY0RIdbZgC_nZeI6qGT2SsA52Fo1jUmewWs=" alt=""></div>
+                    <h1>PETS WORLD</h1>
+                </div>
+                <form id="otpForm" action="" method="POST">
+                    <h5>Reset Password For {{email}}</h5>
+                    <div class="psswd-cont">
+                        <input type="password" name="check-psswd" id="check-psswd" placeholder="Enter your password.." required>
+                        <p id="alert"></p>
+                    </div>
+                    <div class="psswd-cont">
+                        <input type="password" name="psswd" id="psswd" placeholder="Confirm your password.." required>
+                        <p id="alert2"></p>
+                    </div>
+                    {{!-- <a href="#">Forgot password?</a> --}}
+                    <button class="login-btn">RESET</button>
+                </form>
+                
+            </div>
+            <div class="form-section-2">
+                <div class="sign-in">
+                    <img src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-google-icon-logo-png-transparent-svg-vector-bie-supply-14.png" alt="">
+                    <img src="https://www.freepnglogos.com/uploads/facebook-logo-icon/facebook-logo-clipart-flat-facebook-logo-png-icon-circle-22.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="doggy">
+            <img src="https://www.treehugger.com/thmb/Y62sOngV0vrfGLs13beel1Cx2Zk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FRODEL-2019-191331499cc54ef0872ea856a3bc8f2f.jpg" alt="">
+            <span class="title reset">
+                RESET
+            </span>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+    <script>
+        const alert = document.getElementById("alert");
+        const alert2 = document.getElementById("alert2");
+        let psswd = document.getElementById('psswd');
+        let chckPsswd = document.getElementById('check-psswd');
+        let passedValidation;
+        const currentUrl = window.location.href;
+        let regFlag;
+        let typingTimer;
+    //Password Strength Checking Logic    
+        const checkPasswordStrength = (password) => {
+        // Password strength rules (you can customize this as per your requirements)
+            const minLength = 8;
+            const uppercaseRegex = /[A-Z]/;
+            const lowercaseRegex = /[a-z]/;
+            const digitRegex = /[0-9]/;
+
+            // Check password length
+            if (password.length < minLength) {
+                regFlag=false;
+                return 'Password should have at least 8 characters';
+            }
+
+            // Check for uppercase letter
+            if (!uppercaseRegex.test(password)) {
+                regFlag=false;
+                return 'Password should have at least one uppercase letter';
+            }
+
+            // Check for lowercase letter
+            if (!lowercaseRegex.test(password)) {
+                regFlag=false;
+                return 'Must have at least one lowercase letter';
+            }
+
+            // Check for digit
+            if (!digitRegex.test(password)) {
+                regFlag=false;
+                return 'Password should have at least one digit';
+            }
+            regFlag=true;
+            // Password meets all the strength requirements
+            return ' ';
+    };
+    //Password Strength Checking Logic    
+
+
+
+    //Password Comparing Logic    
+    const comparePasswords = () => {
+        let ps1 = chckPsswd.value;
+        let ps2 = psswd.value
+        if(ps1==ps2){
+            passedValidation = true;
+        }else{
+            passedValidation = false;
+        }
+        return ps1==ps2;
+    };
+    //Password Comparing Logic  
+
+     //Password Validation (Strength Checking)
+    chckPsswd.addEventListener("input",function(){
+        alert.style.display="block";  
+        alert.innerText=checkPasswordStrength(this.value);
+        comparePasswords()?alert2.innerText ="":alert2.innerText="Password Ain't matching!"
+    })
+    //Password Validation (Strength Checking)
+
+    
+    //Password Validation (Password Comparing)
+    psswd.addEventListener("input",function(){
+        alert2.style.display="block";
+        comparePasswords()?alert2.innerText ="":alert2.innerText="Password Ain't matching!"
+    })
+    //Password Validation (Password Comparing)
+
+    
+
+    //Form Submission
+    otpForm.addEventListener("submit", async function (e) {
+        e.preventDefault();  
+        // ... existing code to send the form data to the server
+        if (passedValidation && regFlag) {
+            try{
+             const response = await fetch(currentUrl, {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ psswd: psswd.value })
+            });   
+
+            if (!response.ok) {
+                throw new Error("Request failed with status: " + response.status);
+            }
+
+            const data = await response.json();
+
+            if (data.message) {
+                // Display success message
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Password Changed Successfully',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+
+                // Redirect to the login page after a short delay
+                setTimeout(() => {
+                window.location.href = "/login"; // Replace with your login page URL
+                }, 2000); // Delay in milliseconds (e.g., 2000ms = 2 seconds)
+            } else {
+                // Handle other possible responses or display error message
+                Swal.fire(
+                    'What Happened?',
+                    'Try Again Later',
+                    'ADIOS'
+                )   
+            }
+            } catch (err) {
+                console.log("Error:", err);
+            }
+        }
+});
+    //Form Submission
+    </script>
+</body>
+</html> 

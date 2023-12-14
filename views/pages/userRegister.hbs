@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pets World Register Page</title>
+    <link rel="stylesheet" href="../styles/userRegister.css" type="text/css">   
+</head>
+<body>
+    <div class="wrapper" data-aos="zoom-out-down">
+        <div class="form">
+            <div class="form-section-1">
+                <div class="logo">
+                    <div class="logo-img"><img src="https://media.istockphoto.com/id/1324471626/sv/vektor/dog-love-simple-logo.jpg?s=612x612&w=0&k=20&c=QQi-J8_cHY0RIdbZgC_nZeI6qGT2SsA52Fo1jUmewWs=" alt=""></div>
+                    <h1>PETS WORLD</h1>
+                </div>
+                <form action="/register" method="POST" onsubmit="validation(event)">
+                    <div class="name-det" style="dispaly:flex">
+                        <input type="text" name="fName" placeholder="FirstName.. " autocomplete="on" required>
+                        <input type="text" name="lName" placeholder="LastName.." autocomplete="on" required>
+                    </div>
+                    <input type="text" name="userName" id="userName" placeholder="Enter your User Name.." autocomplete="on" required>
+                    <input type="email" name="email" id="email" placeholder="Enter your Email.." autocomplete="on" required>
+                    <div class="psswd-cont">
+                        <input type="password" name="check-psswd" id="check-psswd" placeholder="Enter your password.." required>
+                        <p id="alert"></p>
+                    </div>
+                    <div class="psswd-cont">
+                        <input type="password" name="psswd" id="psswd" placeholder="Confirm your password.." required>
+                        <p id="alert2"></p>
+                    </div>
+                    <input type="tel" name="phoneNumber" id = "phoneNumber" pattern="[0-9]{10}" placeholder="Enter your mobile number" required autocomplete="on" maxlength="10">
+                    <button class="login-btn" id="registerBtn">REGISTER</button>
+                    <h5 style="margin-bottom:1rem;font-size:.7rem">If you are already signed in <span><a href="/login" style="color:orange;">LOGIN?</a></h5> 
+                </form>
+                
+            </div>
+            <div class="form-section-2">
+                <div class="sign-in">
+                    <i class="fa-brands fa-google"></i>
+                    <i class="fa-brands fa-facebook-f"></i>
+                </div>
+            </div>
+        </div>
+        <div class="doggy">
+            <img src="https://www.kitnipbox.com/meow/wp-content/uploads/2018/02/cat-playing-1-1140x660.jpg" alt="">
+            <span class="title">
+                REGISTER PAGE
+            </span>
+        </div>
+    </div>
+    <script>
+        const alert = document.getElementById("alert");
+        const alert2 = document.getElementById("alert2");
+        let psswd = document.getElementById('psswd');
+        let chckPsswd = document.getElementById('check-psswd');
+        let passedValidation;
+        let regFlag;
+        const email  = document.getElementById("email");
+        const userName  = document.getElementById("userName");
+        const ph  = document.getElementById("phoneNumber");
+        let typingTimer;
+    //Password Strength Checking Logic    
+        const checkPasswordStrength = (password) => {
+        // Password strength rules (you can customize this as per your requirements)
+            const minLength = 8;
+            const uppercaseRegex = /[A-Z]/;
+            const lowercaseRegex = /[a-z]/;
+            const digitRegex = /[0-9]/;
+
+            // Check password length
+            if (password.length < minLength) {
+                regFlag=false;
+                return 'Password should have at least 8 characters';
+            }
+
+            // Check for uppercase letter
+            if (!uppercaseRegex.test(password)) {
+                regFlag=false;
+                return 'Password should have at least one uppercase letter';
+            }
+
+            // Check for lowercase letter
+            if (!lowercaseRegex.test(password)) {
+                regFlag=false;
+                return 'Must have at least one lowercase letter';
+            }
+
+            // Check for digit
+            if (!digitRegex.test(password)) {
+                regFlag=false;
+                return 'Password should have at least one digit';
+            }
+            regFlag=true;
+            // Password meets all the strength requirements
+            return ' ';
+    };
+    //Password Strength Checking Logic    
+
+
+
+    //Password Comparing Logic    
+    const comparePasswords = () => {
+        let ps1 = chckPsswd.value;
+        let ps2 = psswd.value
+        if(ps1==ps2){
+            passedValidation = true;
+        }else{
+            passedValidation = false;
+        }
+        return ps1==ps2;
+    };
+    //Password Comparing Logic    
+    
+    //Validates the Form Before Submission
+    function validation(event){
+         event.preventDefault();
+          if (passedValidation && regFlag) {
+                event.target.submit();
+            }
+    }
+    //Validates the Form Before Submission
+  
+    //Password Validation (Strength Checking)
+    chckPsswd.addEventListener("input",function(){
+        alert.style.display="block";  
+        alert.innerText=checkPasswordStrength(this.value);
+        comparePasswords()?alert2.innerText ="":alert2.innerText="Password Ain't matching!"
+    })
+    //Password Validation (Strength Checking)
+
+    
+    //Password Validation (Password Comparing)
+    psswd.addEventListener("input",function(){
+        alert2.style.display="block";
+        comparePasswords()?alert2.innerText ="":alert2.innerText="Password Ain't matching!"
+    })
+    //Password Validation (Password Comparing)
+
+
+    //Check the Email Validity
+    email.addEventListener("keyup",async function(){
+           try{
+                let userD = await fetch("/api/users");
+                let userInfo = await userD.json();
+                let user = userInfo.users.find(val=>val.email===this.value.trim());
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(()=>{
+                    if(user){
+                        this.setCustomValidity("This Email already Exists!")
+                        this.reportValidity();
+                    }else{    
+                        this.setCustomValidity("");
+                    }
+                },500)
+            }catch(err){
+                console.log("ERR: ",err);
+            }  
+    })
+    //Check the Email Validity 
+
+    //Check the Username Validity 
+    userName.addEventListener("keyup",async function(){
+           try{
+                let userD = await fetch("/api/users");
+                let userInfo = await userD.json();
+                let user = userInfo.users.find(val=>val.userName.toLowerCase()==this.value.trim().toLowerCase());
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(()=>{
+                    if(user){
+                        this.setCustomValidity("This username already Exists!")
+                        this.reportValidity();
+                    }else{    
+                        this.setCustomValidity("");
+                    }
+                },500)
+            }catch(err){
+                console.log("ERR: ",err);
+            }  
+    })
+    //Check the Username Validity 
+
+    //Check the Ph Number Validity 
+    ph.addEventListener("keyup",async function(){
+           try{
+                let userD = await fetch("/api/users");
+                let userInfo = await userD.json();
+                let user = userInfo.users.find(val=>val.phoneNumber==this.value);
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(()=>{
+                    if(user){
+                        this.setCustomValidity("This Number is already registered!")
+                        this.reportValidity();
+                    }else{    
+                        this.setCustomValidity("");
+                    }
+                },500)
+            }catch(err){
+                console.log("ERR: ",err);
+            }  
+    })
+    //Check the Ph Number Validity 
+
+     
+    
+    </script>
+</body>
+</html>

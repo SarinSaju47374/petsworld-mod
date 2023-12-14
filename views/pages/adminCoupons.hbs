@@ -1,0 +1,225 @@
+  <main>
+<h1>Manage Coupons</h1>
+ 
+ 
+{{!-- Product Add --}}
+
+<div class="form-admin">
+    <h2>Add a COUPON</h2>
+     <form method="POST" id="couponFrm" onsubmit="submitFrm(event)">
+        <input type="text" name="coupon" placeholder="Enter the Coupon Name.." id="coupon" required>
+        <input type="number" name="minPrice" placeholder="Enter the Minimum Price.." id="minPrice" required>
+        <input type="number" name="discount" placeholder="Enter the Discount..(Min Discount must be 30)" id ="discount" max="30" required>
+        <button class="form-btn" type="submit">
+            ADD
+        </button>
+    </form>
+</div>
+<div class="table" style="margin-top:2rem;">
+    <h2>Preview Of Coupons</h2>
+    <table>
+    <thead>
+    <tr>
+        <th>Coupon Id</th>
+        <th>Coupon Name</th>
+        <th>Minimum Price</th>
+        <th>Discount</th>
+        <th>Expiration</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+        {{!-- DYNAMIC DATA --}}
+    </tbody>
+</table>
+</div>
+
+{{!-- END OF ORDERS --}}
+</main>
+
+{{!-- END OF MAIN --}}
+
+<div class="right">
+    <div class="top">
+        <button id="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="theme-toggler">
+            <i class="fa-solid fa-sun active"></i>
+            <i class="fa-solid fa-moon"></i>
+        </div>
+        <div class="profile">
+            <div class="info">
+                <p>Hey , <b>Sarin </b></p>
+                <small class="text-muted">ADMIN</small>
+            </div>
+            <div class="profile-photo">
+                <img src="/images/profile.jpg" alt="#">
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+<script src="/JS/adminContent.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+<script>
+    const sideBarOpts = document.querySelectorAll(".sidebar a");
+    sideBarOpts.forEach(a=>{
+        a.classList.remove("active");
+    })
+    sideBarOpts[5].classList.add("active");
+</script>
+<script>
+    let tBody = document.querySelector("table tbody");
+    let form = document.getElementById("couponFrm");
+    let couponInput = document.getElementById("coupon")
+    let minPriceInput = document.getElementById("minPrice")
+    let discountInput = document.getElementById("discount")
+    coupon.addEventListener("change",async function(){
+        let dataD= await fetch("/coupons-data");
+         let data = await dataD.json();
+         let coupon = data.find(val=>val.coupon==this.value.trim().toUpperCase());
+         
+         if(coupon){
+            this.setCustomValidity("The coupon Already Exists")
+            this.reportValidity();
+         }else{
+            this.setCustomValidity("")
+         }
+    })
+
+
+     //this code snipppet ensures the admin wont enter the discount more then 100
+    const numberInput = document.getElementById('discount');
+    numberInput.addEventListener('input', function() {
+        if (Number(this.value) > Number(this.max)) {
+        this.value = 15; // Set the input value to 2% if it exceeds the limit
+        }
+    });
+    //this code snipppet ensures the admin wont enter the discount more then 100
+
+    document.addEventListener("DOMContentLoaded",()=>{
+        run("/coupons-data")
+        let id = setInterval(()=>{run("/coupons-data")}, 5000);
+        clearInterval(id);
+         
+    })
+     
+
+    //Delete the Coupon
+    async function deleteCoupon(id){
+        new Promise(async (resolve,reject)=>{
+            let confirm = await fetch(`/coupons-data/${id}`);
+            let resp = await confirm.json();
+            if(resp.deleted){
+                resolve();
+            }else{
+                reject();
+            }
+        })
+    }
+    //Delete the Coupon
+
+    //deleteConfirmation
+    function popup(id){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then(async (result) => {
+            if (result.isConfirmed) {
+                try{
+                    await deleteCoupon(id);
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                  
+                }catch(err){
+                    console.log(err);
+                }
+            }
+        })
+    }
+    //deleteConfirmation
+
+
+    //Submit the Form
+    async function submitFrm(e){
+        e.preventDefault();
+        let formData = new FormData(form);
+        let jsonObject={};
+        formData.forEach((value, key) => {
+            jsonObject[key] = value;
+        });
+
+        const jsonBody = JSON.stringify(jsonObject);
+        try{
+            const response = await fetch('/coupon-admin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body:jsonBody,
+            });
+            // Handle response
+            if(!response.ok) console.log("Form not Submitted")
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            couponInput.value="";
+            minPriceInput.value="";
+            discountInput.value="";
+            tBody.innerHTML="";
+            
+        }catch(err){
+            console.log("Error in the Form submitting inside SubmitFRM function: ",err)
+        }
+    }
+    //Submit the Form
+
+    //Fetch the Data
+    async function run(url){
+        console.log("Im inside run")
+        try{
+            let data = await fetch(url);
+            let coupons = await data.json();
+            tBody.innerHTML="";
+            if(coupons.length>=1){
+                coupons.forEach(elem=>{
+                tBody.innerHTML+=`
+                <tr>
+                    <td>${elem._id}</td>
+                    <td>${elem.coupon}</td>
+                    <td>${elem.minPrice}</td>
+                    <td>${elem.discount} %</td>
+                    <td>${elem.expires}</td>
+                    <td><a href="#" onclick="popup('${elem._id}')"><i class="fa-solid fa-trash"></i></a></td>
+                </tr>
+            `
+            })
+            }else{
+                tBody.innerHTML=" <td colspan=\"6\">No Coupons</td>"
+            }
+        }catch(err){
+            console.log("The Fetch aint working: ",err)
+        }
+    }
+    //Fetch the Data
+</script>
+
+ 
+ 
+   
+
+ 

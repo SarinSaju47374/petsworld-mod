@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My test Landing Page</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+        <!-- <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        /> -->
+    <style>
+        /* NAV STYLES */
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Rowdies:wght@300;400;700&display=swap");
+      :root {
+        --main-body: #0b243b;
+        --main-text: #fff;
+        font-family: sans-serif;
+        --dark-text:black;
+      }
+
+      * {
+        /* text-decoration: none; */
+        list-style: none;
+        
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        /* scroll-behavior: smooth; */
+        background-color: var(--main-body);
+        color: var(--main-text);
+      }
+      #scrollToTopBtn{
+        display:none;
+        position:fixed;
+        bottom:10rem;
+        right:1rem;
+        background-color:#539ce181;
+        width:3rem;
+        height:4rem;
+        border-radius:12px;
+        /* display:grid; */
+        place-items:center;
+        font-size: 2rem;
+        color:rgba(255, 255, 255, 0.892);
+      }
+      #scrollToTopBtn.scroll {
+        display: grid;
+      }
+
+      nav {
+        background-color: orange;
+        /* position:sticky; */
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        font-size: clamp(0.7rem, 2vw, 1rem);
+        font-family: "Poppins", sans-serif;
+        justify-content: space-between;
+        padding: 0 2rem;
+        position: relative;
+    }
+    nav a{
+     text-decoration:none;
+     color:white;   
+    }
+      nav .logo-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      nav .logo-section .logo {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      nav .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: center;
+      }
+      nav .menu-section {
+        display: none;
+      }
+      nav .option-section {
+        display: none;
+      }
+      nav .menu-icon {
+        color: var(--main-text);
+        font-size: 20px;
+        cursor: pointer;
+      }
+      nav .menu-section-mob {
+        position: absolute;
+        top: 5rem;
+        background-color: rgba(97, 89, 137, 0.988);
+        display: flex;
+        flex-direction: column;
+        left: -100vw;
+        justify-content: space-between;
+        width: 100vw;
+        transition: left 0.75s ease;
+        z-index:23;
+      }
+      .show {
+        left: 0 !important;
+      }
+      .view {
+        display: block !important;
+      }
+      .set {
+        flex-direction: column;
+      }
+      nav .menu-section-mob > ul {
+        width: 100%;
+        padding: 0;
+        font-size: 1rem;
+      }
+
+      nav .menu-section-mob > ul li .level-1 {
+        display: none;
+      }
+      nav .menu-section-mob ul li:hover {
+        background-color: yellowgreen;
+      }
+
+      nav .menu-section-mob ul li {
+        padding-left: 2rem;
+        min-height: 6vh;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      .menu-section-mob ul > .cart {
+        position: relative;
+      }
+      .menu-section-mob ul li > .cart > span {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        font-size: 10px;
+        background-color: red;
+        text-align: center;
+        position: absolute;
+        top: -6px;
+        left: -1px;
+      }
+       .menu-section-mob > .cart{
+            position:relative;
+        }
+        .menu-section-mob > .cart > span{
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            font-size:10px;
+            background-color:red;
+            text-align:center;
+            position:absolute;
+            top:-6px;
+            left:-1px;
+        }
+        /* NAV STYLES */
+
+        /* CATEGORIES */
+        .container-category{
+            margin:2rem auto;
+            display:grid;
+            grid-template-columns: auto auto;
+            place-items: center;
+        }
+        .container-category .category{
+            display: grid;
+            place-items: center;
+        }
+        .container-category img{
+            width:8rem;
+        }
+        /* CATEGORIES */
+
+        /* CONTAINER-CONTENT STYLES */
+        .container-content{
+            
+            max-width:90vw;
+            margin:2rem auto;
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* adjust the minmax values as per your needs */
+  grid-gap: 20px;
+            place-items: center;
+        }
+        .card{
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            width:16rem;
+            margin-bottom:2px;
+            background-color: rgba(239, 239, 227, 0.931);
+            color:black;
+            border-radius: 22px;
+            overflow:hidden;
+             
+            /* padding:0; */
+        }
+        .card .preview{
+            width:100%;   
+            overflow:hidden;
+
+        }
+        .card h5,.card h6{
+            margin:4px;
+        }
+        .card .preview img{
+            width:100%;
+        } 
+        .card .coupon{
+            display:none;
+
+        }
+        .star-rating::before {
+            content: "★★★★★";
+            position: absolute;
+            top:0;
+            left:0;
+            color: orange;
+            width: var(--rating,0%); /* Updated to use CSS variable */
+            overflow: hidden; /* Added to hide overflowing stars */
+            white-space: nowrap; /* Added to prevent line break */
+        }
+        .star-rating {
+             
+            display:inline-block;
+            position: relative; /* Added for proper positioning */
+        }
+        .star {
+            color: gray;
+        }
+        .container-content .card .price{
+            display:flex;
+            justify-content: space-between;
+            width:8rem;
+            margin-bottom:1rem;
+            font-size:1.8rem;
+       }
+        .container-content .card .price>h6:first-child{
+            text-decoration:line-through;
+            color:gray;
+        }
+
+        .card .options{
+            display: flex;
+            justify-content: space-between;
+            width:5rem;
+        }
+        .card .options{
+            margin-bottom:1rem;
+        }
+        .card .options i{
+            color:black;
+        }
+        .card .options i:hover{
+            color:#0b243b;
+        }
+        /* CONTAINER-CONTENT STYLES */
+
+        /* FOOTER */
+        footer {
+            color: white;
+            background-color: #1c3e5a;
+            padding: 30px 0;
+            width:100vw;
+            margin-top:4rem;
+        }
+        footer a {
+        color: white;
+        }
+        .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+        }
+
+        .footer-links {
+        color: white;
+        display: flex;
+        flex-direction:column;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        }
+
+        .footer-column {
+        flex: 1;
+        }
+
+        h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        }
+
+        ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        }
+
+        ul li {
+        margin-bottom: 10px;
+        }
+
+        ul li a {
+        color: #f4ecec;
+        text-decoration: none;
+        }
+
+        .footer-social ul {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        }
+
+        .footer-social ul li {
+        margin-right: 10px;
+        }
+
+        .footer-social ul li a {
+        color: #333;
+        font-size: 20px;
+        }
+
+        .footer-bottom {
+        text-align: center;
+        }
+
+        .footer-bottom p {
+        margin: 0;
+        font-size: 14px;
+        color: #666;
+        }
+        .footer-social a i{
+        color:white;
+        }
+        /* FOOTER */
+        
+        
+      @media screen and (min-width: 700px) {
+        /* NAV STYLES */
+        nav .menu-icon {
+          display: none;
+        }
+        nav .menu-section{
+          display: flex;
+           
+          font-size:6px;
+        }
+        nav .menu-section>ul{
+            display:flex;
+            flex:1;
+        }
+        nav .menu-section ul{
+          display: flex;
+
+          font-size:16px;
+ 
+        }
+        nav .menu-section ul li{
+            position: relative;
+            margin-right:1rem;
+            box-sizing: border-box;
+            transition: all .6s ease;
+        }
+        nav .menu-section>ul li::after{
+            content:"";
+            position:absolute;
+            background-color: #ff3c78;
+            height:3px;
+            width:0;
+            left:0;
+            bottom:-1px;
+            transition: width .55s ease;
+        }
+        nav .menu-section>ul li:hover::after{
+             width:100%;
+        }
+         
+        nav .option-section {
+          display: flex;
+          font-size:16px;
+          width:5rem;
+          justify-content:space-between;
+        }
+        
+        .option-section > .cart{
+            position:relative;
+        }
+        .option-section > .cart > span{
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            font-size:10px;
+            background-color:red;
+            text-align:center;
+            position:absolute;
+            top:-6px;
+            left:-1px;
+        }
+        nav .option-section>.wishlist i{
+            color:red ;
+        }
+        nav .option-section i:hover{
+            transform:rotateZ(5deg);
+        }
+
+        /* NAV STYLES */
+        
+        /* CONTENT STYLES */
+        .container-content{
+            max-width:90vw;
+            place-items:center;
+            gap:20px;
+        }
+        .card{
+            width:13rem;
+            border-radius: 22px;
+        }
+        /* CONTENT STYLES */
+
+        /* CATEGORIES */
+        .container-category{   
+            grid-template-columns: auto auto auto auto;
+        }
+        .container-category img{
+            width:12rem;
+        }
+        /* CATEGORIES */
+
+        /* FOOTER STYLES */
+        .footer-links{
+            flex-direction:row;
+        }
+        /* FOOTER STYLES */
+        
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo-section">
+        <div class="logo">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwy0pJwLNGxmmFiMpk6AvgrLh1FgPK8i16Zg&usqp=CAU"
+            alt=""
+          />
+        </div>
+        PETS WORLD
+      </div>
+      <div class="menu-icon">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+      <div class="menu-section">
+        <ul>
+          <li><a href="#">DOG</a></li>
+          <li><a href="#">CAT</a></li>
+          <li><a href="#">COMBO PACK</a></li>
+          <li><a href="#">LEARN WITH #PETSWORLD</a></li>
+          <li><a href="#">LEARN ABOUT BREEDS</a></li>
+          <li><a href="#">COUPONS</a></li>
+        </ul>
+      </div>
+      <div class="option-section">
+        <div class="cart">
+          <span>3</span>
+          <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+        <div class="wishlist">
+          <a href=""><i class="fa-solid fa-heart"></i></a>
+        </div>
+        <div class="user">
+          <a href=""><i class="fa-solid fa-user-large"></i></a>
+        </div>
+      </div>
+      <div class="menu-section-mob">
+        <ul>
+          <li>
+            <a href="#"> <i class="fa-solid fa-dog"></i> DOG</a>
+            <div class="level-1">
+              <ul>
+                <li>FOOD</li>
+                <li>TOYS</li>
+                <li>HEALTH</li>
+                <li>TREATS</li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-cat"></i> CAT</a>
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-gifts"></i> COMBO PACK</a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa-brands fa-leanpub"></i> LEARN WITH #PETSWORLD</a
+            >
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-paw"></i> LEARN ABOUT BREEDS</a>
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-gift"></i> COUPONS</a>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a href="#"> <i class="fa-solid fa-heart"></i> Wishlist</a>
+          </li>
+          <li>
+            <a href="#">
+              <div class="cart">
+                <span>3</span>
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+              Cart</a
+            >
+          </li>
+          <li>
+            <a href="#"> <i class="fa-solid fa-right-to-bracket"></i> Login</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="go-up" id="scrollToTopBtn">
+        <i class="fa-solid fa-arrow-up"></i>
+    </div>
+    <div class="container-category">
+        <div class="category">
+            <a href=""
+              ><img
+                src="https://cdn.shopify.com/s/files/1/1199/8502/files/dog-food_300x_crop_center.png?v=1666162971"
+                alt=""
+            /></a>
+            <p>DOG FOOD</p>
+          </div>
+          <div class="category">
+            <a href=""
+              ><img
+                src="https://cdn.shopify.com/s/files/1/1199/8502/files/dog-food_300x_crop_center.png?v=1666162971"
+                alt=""
+            /></a>
+            <p>DOG FOOD</p>
+          </div>
+          <div class="category">
+            <a href=""
+              ><img
+                src="https://cdn.shopify.com/s/files/1/1199/8502/files/dog-food_300x_crop_center.png?v=1666162971"
+                alt=""
+            /></a>
+            <p>DOG FOOD</p>
+          </div>
+          <div class="category">
+            <a href=""
+              ><img
+                src="https://cdn.shopify.com/s/files/1/1199/8502/files/dog-food_300x_crop_center.png?v=1666162971"
+                alt=""
+            /></a>
+            <p>DOG FOOD</p>
+          </div>
+    </div>
+    <div class="container-content">
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="preview">
+                <img src="https://cdn.shopify.com/s/files/1/1199/8502/products/Pedigree-Adult-Dry-Dog-Food-Chicken-Vegetables-FOP_360x.jpg?v=1666425338" alt="">
+            </div>
+            <h6>Product Brand</h6>
+            <h5>Product Name</h5>
+            <div class="star-rating" style="--rating: 50%;">
+                <div class="star" id="starRating">
+                    ★★★★★
+                </div>
+            </div>
+            <div class="coupon">
+                <p></p>
+            </div>
+            <div class="price">
+                <h6>$40.00<h6>
+                <h6>$30.00</h6>
+            </div>
+            <div class="options">
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href=""><i class="fa-solid fa-heart"></i></a>
+                <a href=""><i class="fa-solid fa-eye"></i></a>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4>About Us</h4>
+              <ul>
+                <li><a href="#">Our Story</a></li>
+                <li><a href="#">Mission and Values</a></li>
+                <li><a href="#">Testimonials</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h4>Products</h4>
+              <ul>
+                <li><a href="#">Dog Food</a></li>
+                <li><a href="#">Cat Food</a></li>
+                <li><a href="#">Pet Accessories</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h4>Contact Us</h4>
+              <ul>
+                <li><a href="#">Email: info@example.com</a></li>
+                <li><a href="#">Phone: +1234567890</a></li>
+                <li><a href="#">Address: 123 Street, City, Country</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-social">
+            <ul>
+              <li>
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa-brands fa-square-twitter"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa-brands fa-square-instagram"></i></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa-brands fa-square-pinterest"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="footer-bottom">
+            <p>&copy; 2023 Your Company. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    <script>
+      let menu = document.querySelector(".menu-icon");
+      let menuSection = document.querySelector(".menu-section-mob");
+      let lists = document.querySelectorAll("nav .menu-section-mob>ul li");
+
+      menu.addEventListener("click", () => {
+        // alert("hello")
+        event.stopPropagation();
+        menuSection.classList.toggle("show");
+      });
+      menuSection.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+      document.addEventListener("click", () => {
+        menuSection.classList.remove("show");
+      });
+      lists.forEach((list) => {
+        list.addEventListener("click", (event) => {
+          // alert("hello")
+          event.stopPropagation();
+          list.children[1].classList.toggle("view");
+          list.children.classList.toggle("set");
+        });
+      });
+
+
+    //   SCROLL JS
+
+    // Get the button element
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+    // Function to check the scroll position and toggle button visibility
+    function toggleScrollToTopBtn() {
+    if (window.pageYOffset > 100) {
+        scrollToTopBtn.classList.add('scroll');
+    } else {
+        scrollToTopBtn.classList.remove('scroll');
+    }
+    }
+
+    // Function to scroll to the top when the button is clicked
+    function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Add scroll event listener to check the scroll position
+    window.addEventListener('scroll', toggleScrollToTopBtn);
+
+    // Add click event listener to scroll to the top when the button is clicked
+    scrollToTopBtn.addEventListener('click', scrollToTop);
+
+    //   SCROLL JS
+    
+    </script>
+  </body>
+</html>

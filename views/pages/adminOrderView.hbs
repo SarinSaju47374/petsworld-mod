@@ -1,0 +1,445 @@
+<main>
+<h1>Orders</h1>
+
+
+ 
+{{!-- Product Add --}}
+
+<div class="table-admin">
+    <h2>View Recent Orders</h2> 
+    <div class="search-options">
+        <div class="input-admin">
+            <input type="text" placeholder="Search here..">
+            <i  class="fa-solid fa-magnifying-glass" style = "margin-right:1rem"></i>
+        </div>
+         
+    </div>
+    <div class="table">
+         <table>
+            <thead>
+            <tr>
+                <th>OrderId</th>
+                <th>First Name</th>
+                <th>Delivery Address</th>
+                <th>Total Amount</th>
+                <th>View</th>
+               
+            </tr>
+            </thead>
+            <tbody>
+             {{!-- DYNAMIC DATA --}}
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+            <ul></ul>
+    </div>
+</div>
+
+{{!-- END OF ORDERS --}}
+{{!-- FORM FOR MODIFYING EXISTING DATA --}}
+  <div class="order-popup">
+     <h2>Modify Product</h2>
+     <i class="fa-solid fa-xmark"></i>
+    <form id="modify-order-form">
+         <table>
+            <thead>
+            <tr>
+                <th>OrderId</th>
+                <th>Name</th>
+                <th>Delivery Address</th>
+                <th>Product Name</th>
+                <th>Amount</th>
+                <th>Payment Mode</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+                {{!-- <tr>
+                <td>OrderId</td>
+                <td>First Name</td>
+                <td>Delivery Address</td>
+                <td>Total Amount</td>
+<td>Payment Mode</td>
+                <td>
+                    <select class="order-status-dropdown">
+                        <option value="orderPlaced">Order Placed</option>
+                        <option value="orderShipped">Order Shipped</option>
+                        <option value="orderOnRoute">Order On-Route</option>
+                        <option value="orderDelivered">Order Delivered</option>
+                        <option value="orderCancelled">Order Cancelled</option>
+                    </select>
+                </td>
+            </tr> --}}
+            </tbody>
+        </table>
+    </form>
+
+  </div>
+  {{!-- END OF FORM FOR MODIFYING EXISTING DATA --}}
+</main>
+
+{{!-- END OF MAIN --}}
+
+<div class="right">
+    <div class="top">
+        <button id="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="theme-toggler">
+            <i class="fa-solid fa-sun active"></i>
+            <i class="fa-solid fa-moon"></i>
+        </div>
+        <div class="profile">
+            <div class="info">
+                <p>Hey , <b>Sarin </b></p>
+                <small class="text-muted">ADMIN</small>
+            </div>
+            <div class="profile-photo">
+                <img src="/images/profile.jpg" alt="#">
+            </div>
+        </div>
+    </div>
+    {{!-- <div class="recent-updates">
+        <h2>Recent Updates</h2>
+        <div class="updates">
+            <div class="update">
+                <div class="profile-photo">
+                    <img src="/images/profile2.jpg" alt="">
+                </div>
+                <div class="message">
+                    <p><b>Mike Tyson</b> recieved his order of Dog Food Pedigree!</p>
+                    <small class="text-muted">2 minutes ago</small>
+                </div>
+            </div>
+            <div class="update">
+                <div class="profile-photo">
+                    <img src="/images/profile3.jpg" alt="">
+                </div>
+                <div class="message">
+                    <p><b>Mike Tyson</b> recieved his order of Dog Food Pedigree!</p>
+                    <small class="text-muted">2 minutes ago</small>
+                </div>
+            </div>
+            <div class="update">
+                <div class="profile-photo">
+                    <img src="/images/profile4.jpg" alt="">
+                </div>
+                <div class="message">
+                    <p><b>Mike Tyson</b> recieved his order of Dog Food Pedigree!</p>
+                    <small class="text-muted">2 minutes ago</small>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+    
+</div>
+{{!-- <script src="/JS/adminContent.js"></script> --}}
+<script src="/JS/adminContent.js"></script>
+<script>
+    const sideBarOpts = document.querySelectorAll(".sidebar a");
+     
+
+    sideBarOpts.forEach(a=>{
+        a.classList.remove("active");
+    })
+    sideBarOpts[2].classList.add("active");
+</script>
+
+  
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+<script>
+    let pg;
+    //REQUIRED DOM DATA
+    let tableTbody = document.querySelector(".table-admin table tbody");
+    let input = document.querySelector(".input-admin input");
+    let category = document.querySelector(".search-options .category");
+    
+    let totalPages;
+    let subCategory = document.querySelector(".search-admin .subCategory");    
+    //REQUIRED DOM DATA
+
+    //Numbered FLAG
+    let flag;
+    //Numbered FLAG
+    
+
+
+    
+    //SEARCH LOGIC
+    input.addEventListener("input",()=>{
+        flag=1;
+        const searchTerm = input.value.trim();
+        run(`/custom/orders?s=${searchTerm}`);
+    })
+    //SEARCH LOGIC
+    
+    {{!-- //CATEGORY SELECTION LOGIC
+    category.addEventListener("change",async()=>{
+        flag=2
+        const option = category.value;
+        run(`api/products?cat=${option}`);
+        const response = await fetch(`/api/products?cat=${option}`); // Replace with your API endpoint URL
+            if (!response.ok) {
+                throw new Error('Request failed with status: ' + response.status);
+            }
+            const pr = await response.json();
+            totalPages = Math.ceil(pr.total/pr.limit);
+            element(totalPages,1)
+    })
+    //CATEGORY SELECTION LOGIC
+      --}}
+    
+    //RUN FETCHING DATA
+    async function run(url){
+        try {
+            const response = await fetch(url); // Replace with your API endpoint URL
+            if (!response.ok) {
+            throw new Error('Request failed with status: ' + response.status);
+            }
+            const or = await response.json();
+            if(!or.orders){
+                tableTbody.innerHTML="No Data";
+            }
+            
+            tableTbody.innerHTML="";
+            or.orders.forEach(o=>{
+                tableTbody.innerHTML+=`<tr>
+                            <td>#PTW${o._id}</td>
+                            <td>${o.address.fName} ${o.address.lName}</td>
+                            <td class="addr">${o.address.addr},${o.address.city},${o.address.state},${o.address.country}</td>
+                            <td>Rs ${o.totalPrice}</td>
+                            <td><i class="fa-solid fa-eye" style="cursor:pointer" onclick="viewMore('${o._id}',${or.page})"></i></td>
+                             
+                        </tr>`;
+            })
+        } catch (error) {
+            // Handle any errors that occurred during the fetch
+            console.log('Error:', error.message);
+                
+        }
+    }
+    {{!-- //RUN FETCHING DATA
+     chsStatus.addEventListener("change",async function(){
+        console.log(this.value)
+     })
+     --}}
+    // *************PAGINATION UI******************
+    //selecting required Element
+    const ulTag = document.querySelector("ul");
+    
+    function element(totalPages,page){
+        flag=3;
+        let liTag = "";
+        let beforePages = page-1;
+        let afterPages = page+1;
+        let activeLi;
+        
+        if(page>1){
+            liTag+=`<li class="btn prev" onclick="element(totalPages,${beforePages})"><span><i class="fa-solid fa-chevron-left"></i></span>Prev</li>`;
+        }
+        if(page>2){
+            liTag+=`<li class="numb ${activeLi}" onclick="element(totalPages,1)"><span>1</span></li>`;
+            if(page>3){
+            liTag+=`<li class="dots"><span>....</span></li>`
+            }
+        }
+        
+        {{!-- //how many pages or li show before the current li
+        if(page==1){
+            afterPages=afterPages+2;
+        }else if( page==2){
+            afterPages=afterPages+1;
+        }
+        
+        //how many pages or li show before the current li
+        if(page==totalPages){
+            beforePages=beforePages-2;
+        }else if( page==totalPages-1){
+            beforePages=beforePages-1;
+        }
+         --}}
+        for(let pageLength=beforePages;pageLength<=afterPages;pageLength++){
+            if(pageLength>totalPages|| pageLength <= 0){
+            continue;
+            }
+            if(pageLength<1){
+            pageLength = pageLength+1;
+            }
+            if(page==pageLength){
+            activeLi="active";
+            }else{
+            activeLi="";
+            }
+            liTag+=`<li class="numb ${activeLi}" onclick="element(totalPages,${pageLength})"><span>${pageLength}</span></li>`;
+        }
+        
+        if(page<totalPages-1){
+            if(page<totalPages-2){
+            liTag+=`<li class="dots"><span>....</span></li>`
+            }
+            liTag+=`<li class="numb" onclick="element(totalPages,${totalPages})"><span>${totalPages}</span></li>`;
+        }
+        
+        if(page<totalPages){
+        liTag+=`<li class="btn next" onclick="element(totalPages,${afterPages})">Next<span><i class="fa-solid fa-chevron-right"></i></span></li>`; 
+        }
+        ulTag.innerHTML=liTag;
+       
+       
+        pg=page;
+        run(`/custom/orders?p=${page}`)
+    }
+    
+    // *************PAGINATION UI******************
+
+  
+   
+         
+        document.addEventListener("DOMContentLoaded", async function() {
+        // DOM manipulation and other code here
+            run('/custom/orders');
+            const response = await fetch("/custom/orders"); // Replace with your API endpoint URL
+            if (!response.ok) {
+                throw new Error('Request failed with status: ' + response.status);
+            }
+            const or = await response.json();
+            totalPages = Math.ceil(or.total/or.limit);
+            element(totalPages,1)
+        
+        });
+
+
+        //Close the modal 
+        document.querySelector(".order-popup i").addEventListener("click",()=>{
+            document.querySelector(".order-popup").style.display="none";
+            run(`/custom/orders?p=${pg}`)
+        })
+        //Close the modal 
+        
+
+        async function viewDet(oid){
+            let response = await fetch(`/custom/orders/${oid}`)
+                let data  = await response.json();
+                if(!response.ok){
+                    console.log("The data is not received")
+                }
+                document.querySelector(".order-popup").style.display="block"
+                document.querySelector("#modify-order-form table tbody").innerHTML="";
+                data.products.forEach(o=>{
+                  
+                  
+                    let selectOptions = '';
+                    switch (o.status) {
+                        case 'orderPlaced':
+                        selectOptions = `
+                            <option value="">Select Status</option>
+                            <option value="orderShipped">Order Shipped</option>
+                            <option value="orderOnRoute">Order On-Route</option>
+                            <option value="orderDelivered">Order Delivered</option>
+                            <option value="orderCancelled">Order Cancelled</option>`;
+                        break;
+                        case 'orderShipped':
+                        selectOptions = `
+                
+                            <option value="orderShipped" disabled selected>Order Shipped</option>
+                            <option value="orderOnRoute">Order On-Route</option>
+                            <option value="orderDelivered">Order Delivered</option>
+                            <option value="orderCancelled">Order Cancelled</option>`;
+                        break;
+                        case 'orderOnRoute':
+                        selectOptions = `
+                     
+                            <option value="orderShipped" disabled>Order Shipped</option>
+                            <option value="orderOnRoute" disabled selected>Order On-Route</option>
+                            <option value="orderDelivered">Order Delivered</option>
+                            <option value="orderCancelled">Order Cancelled</option>`;
+                        break;
+                        case 'orderDelivered':
+                        selectOptions = `
+                         
+                            <option value="orderShipped" disabled>Order Shipped</option>
+                            <option value="orderOnRoute" disabled>Order On-Route</option>
+                            <option value="orderDelivered" disabled selected>Order Delivered</option>
+                            <option value="orderCancelled">Order Cancelled</option>`;
+                        break;
+                        case 'orderCancelled':
+                        selectOptions = `
+                        
+                            <option value="orderShipped" disabled>Order Shipped</option>
+                            <option value="orderOnRoute" disabled>Order On-Route</option>
+                            <option value="orderDelivered" disabled>Order Delivered</option>
+                            <option value="orderCancelled" disabled selected>Order Cancelled</option>`;
+                        break;
+                    }
+                    document.querySelector("#modify-order-form table tbody").innerHTML+=`<tr>
+                                <td>#PTW${data._id}</td>
+                                <td>${data.address.fName} ${data.address.lName}</td>
+                                <td class="addr">${data.address.addr},${data.address.city},${data.address.state},${data.address.country}</td>
+                                <td>${o.productId.productName}</td>
+                                <td>Rs ${o.salePrice}</td>
+                                <td>${data.paymentmode.toUpperCase()}</td>
+                                <td>${o.status}</td>
+                                <td>
+                                    <select class="order-status-dropdown" data-order-id="${data._id}" data-product-id="${o.productId._id}">
+                                        ${selectOptions}
+                                    </select>
+                                </td>
+                            </tr>`;
+                })
+        }
+
+        //open the modal
+        async function viewMore(oid,pg){
+            {{!-- console.log(oid) --}}
+            try{
+                await viewDet(oid);
+                 
+                //Order Management
+                document.querySelectorAll(".order-status-dropdown").forEach(elem=>{
+                    elem.addEventListener("input",async function(){
+                         console.log("******************")
+                        const orderId = this.getAttribute("data-order-id");
+                        const productId = this.getAttribute("data-product-id");
+                        const newStatus = this.value;
+                        // Create the payload object
+                        const payload = {
+                        orderId: orderId,
+                        productId: productId,
+                        newStatus: newStatus
+                        };
+
+                        // Make the POST request
+                        await fetch("/custom/orders", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(payload)
+                        })
+                        .then(response => response.json())
+                        .then(async (data) => {
+                        // Handle the response data
+                        await viewMore(oid,pg);
+                        {{!-- console.log("Order status updated:", data); --}}
+                        
+                        })
+                        .catch(error => {
+                        console.log("Error updating order status:", error);
+                        });
+                    })
+                });
+                //Order Management
+
+            }catch(err){
+                console.log(err);
+            }
+        }
+        //open the modal
+
+        
+    </script>
+</body>
+</html>

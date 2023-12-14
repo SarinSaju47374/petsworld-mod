@@ -1,0 +1,184 @@
+<main>
+<h1>ADD PRODUCT</h1>
+{{!-- Product Add --}}
+
+<div class="form-admin">
+    <h2>Add a Product</h2>
+     <form action="/product-add" method="POST" enctype="multipart/form-data" required>
+        <input type="text" name="productName" placeholder="Enter the Product Name.." required>
+        <input type="text" name="brandName" placeholder="Enter Brand Name.." required>
+        <input type="text" name="description" placeholder="Enter Description.." required>
+        <input type="text" name="points" placeholder="Enter the points..." required>
+        <input type="number" name="productPrice" placeholder="Product Price.." required>
+        <input type="number" name="discount" id = "discount" placeholder="Enter the Default Discount" max="100" required>
+        <input type="number" name="stock" placeholder="Enter Thew Stock" required>
+        <select name="ctgryId" id="ctgry" required>
+            <option value="" selected>Add Category</option>
+            //Dynamic Data for Category
+        </select>
+        <select name="subCtgryId" id="subCtgry" required>
+            <option value="" selected>Add SubCategory</option>
+            //Dynamic Data for SubCategory
+        </select>
+        {{!-- <input type="text" name="paymentOption" placeholder="paymentOption" required> --}}
+        <input type="text" id="image-ratio-input" name="imageRatio" placeholder="Enter image ratio (e.g., 16:9)">
+        <input type="number" name="rating" placeholder="Initial rating" required>
+        <div class="file-input-wrapper">
+            <label for="file-input" class="file-label">
+            <input type="file" id="file-input" name="photos" accept=".jpeg, .jpg, .png, .svg, .webp" multiple onchange="updateFileLabelText(this)" required>
+            Choose Files
+            </label>
+        </div>
+        <button class="form-btn" type="submit">
+            ADD
+        </button>
+    </form>
+</div>
+
+{{!-- END OF ORDERS --}}
+</main>
+
+{{!-- END OF MAIN --}}
+
+<div class="right">
+    <div class="top">
+        <button id="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="theme-toggler">
+            <i class="fa-solid fa-sun active"></i>
+            <i class="fa-solid fa-moon"></i>
+        </div>
+        <div class="profile">
+            <div class="info">
+                <p>Hey , <b>Sarin </b></p>
+                <small class="text-muted">ADMIN</small>
+            </div>
+            <div class="profile-photo">
+                <img src="/images/profile.jpg" alt="#">
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+<script src="/JS/adminContent.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+<script>
+    const sideBarOpts = document.querySelectorAll(".sidebar a");
+     
+
+    sideBarOpts.forEach(a=>{
+        a.classList.remove("active");
+    })
+    sideBarOpts[8].classList.add("active");
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded",()=>{
+        run();
+    })
+    
+    //this code snipppet ensures the admin wont enter the discount more then 100
+    const numberInput = document.getElementById('discount');
+    numberInput.addEventListener('input', function() {
+        if (Number(this.value) > Number(this.max)) {
+        this.value = 2; // Set the input value to 2% if it exceeds the limit
+        }
+    });
+    //this code snipppet ensures the admin wont enter the discount more then 100
+
+
+    document.getElementById("ctgry").addEventListener("change",function(){
+        subDetector(this.value);
+    })
+    async function run(){
+        try{
+            let data = await fetch("/ctgry-add/fetch");
+            let info = await data.json();
+            
+            if(info && info.length>0){
+                {{!-- document.getElementById("ctgry").innerHTML=""; --}}
+                info.forEach(val=>{
+                    document.getElementById("ctgry").innerHTML+=`<option value="${val._id}">${val.name}</option>`
+                })
+            }else{ 
+                document.getElementById("ctgry").innerHTML="<option value=null>No Category</option>"
+            }
+
+        }catch(err){
+            console.log(err);
+        }
+    }
+    async function subDetector(id){
+        try{
+            let data = await fetch(`/ctgry-add/fetch/${id}`);
+            let info = await data.json();
+            
+            if(info && info.length>0){
+                document.getElementById("subCtgry").innerHTML=`<option value="">Add SubCategory</option>`;
+                info.forEach(val=>{
+                    document.getElementById("subCtgry").innerHTML+=`<option value="${val._id}">${val.name}</option>`
+                })
+            }else{ 
+                document.getElementById("subCtgry").innerHTML="<option value=null>No Category</option>"
+            }  
+
+        }catch(err){
+            console.log(err);
+        }
+    }
+    ctgryForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        // Create FormData object to collect form data
+        const jsonObject = {};
+        let formData = new FormData(ctgryForm);
+        formData.forEach((value, key) => {
+            jsonObject[key] = value;
+        });
+
+        const jsonBody = JSON.stringify(jsonObject);
+        console.log(jsonBody);
+        try {
+            // Send form data using Fetch POST request
+            const response = await fetch('/ctgry-add/ctgry', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonBody
+            });
+
+            // Handle response
+            if(!response.ok) console.log("Form not Submitted")
+            let success = await response.json();
+            if(success.success){
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Category Is Added',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                run();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went Wrong!',
+                    footer: 'Check it out Amigo!'
+                })
+            }
+                
+            
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>
+
+ 
+ 
+   
+
+ 

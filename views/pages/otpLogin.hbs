@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Form</title>
+  <style>
+    body {
+      background-color: #0b243b;
+      background-image: url("https://media0.giphy.com/media/Wd4X2eRNbKEqFuIeGm/giphy.gif");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      height: 100vh;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: grid;
+      place-items: center;
+    }
+    
+    .container {
+      text-align: center;
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #0b243b88;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.054);
+      border: 1px solid #06dff7ee;
+    }
+    
+    .otp-input {
+      display: flex;
+      justify-content: center;
+    }
+    
+    .otp-input input {
+      width: 80%;
+      height: 50px;
+      text-align: center;
+      font-size: 24px;
+      background-color: #0bb3e6c2;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+    
+    .otp-input input:focus {
+      outline: none;
+      box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
+    }
+    
+    .otp-submit {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .otp-submit input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #00aaff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .otp-submit input[type="submit"]:hover {
+      background-color: #0088dd;
+    }
+    
+    .timer {
+      font-size: 24px;
+      margin-top: 20px;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" data-aos="flip-left">
+    <h2>Enter OTP</h2>
+    <form id="otpForm" action="" method="POST">
+      <div class="otp-input">
+        <input type="text" name="otp" maxlength="4" >
+      </div>
+      <div class="otp-submit">
+        {{!-- <input type="hidden" id="emailMob" name="phone" value="{{number}}"> --}}
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+    <div class="timer" id="timer">01:00</div>
+  </div>
+
+  <script>
+    // Countdown Timer
+    function startTimer(duration, display) {
+      let timer = duration;
+      let minutes, seconds;
+
+      let countdownInterval = setInterval(function() {
+        minutes = Math.floor(timer / 60);
+        seconds = timer % 60;
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+          clearInterval(countdownInterval);
+          display.textContent = "Time's up!";
+          disableInput();
+        }
+      }, 1000);
+    }
+
+    // Disable Input Field
+    function disableInput() {
+      const otpInput = document.querySelector('input[name="otp"]');
+      otpInput.disabled = true;
+    }
+
+    // Start the timer on page load
+    window.onload = function() {
+      const oneMinute = 60; // Change to desired duration in seconds
+      const display = document.querySelector('#timer');
+      startTimer(oneMinute, display);
+    };
+  </script>
+</body>
+</html>

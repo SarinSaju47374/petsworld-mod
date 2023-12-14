@@ -1,0 +1,266 @@
+<link rel="stylesheet" href="/styles/userAddress.css">
+<div class="search-cont">
+    <input type="text" placeholder="Search Your Orders...">
+    <a href=""><i class="fa-solid fa-magnifying-glass"></i></a></i>
+</div>
+<div class="page" style="color:rgb(224, 168, 66);margin:0.45rem auto;font-size:1rem;font-weight:900;letter-spacing:.45rem;display:flex;align-items:center;height:4rem;overflow:hidden;">
+    <img src="https://png.pngtree.com/png-vector/20230120/ourmid/pngtree-dog-logo-veterinary-design-clipart-vet-golden-retriever-puppy-clinic-png-image_6565449.png" alt="" style="width:8rem;">
+    ADDRESS
+</div>
+<div class="checkout-bs-form"> 
+    <form method="POST">
+        <div class="country">
+            <input type="text" name="country" id="country" placeholder="Country/Region" required>
+        </div>
+        <div class="fullName">
+                <input type="text" name="fName" id="fName" placeholder="FirstName" required> 
+                <input type="text" name="lName" id="lName" placeholder="LastName" required> 
+        </div>
+        <div class="address"><textarea id="addr" name="addr" id="addr" rows="4" cols="40" placeholder="Address (Just Include The landscape, Building No. and so.....)" required></textarea></div>
+        <div class="add-more">
+            <input type="text" name="city" id="city" placeholder="City" required>
+            <input type="text" name="state" id="state" placeholder="State" required>
+            <input type="text"  name = "pinCode" id = "pinCode" id="pincodeInput" pattern="[1-9][0-9]{5}" maxlength="6" placeholder="PinCode" required>
+        </div>
+        <div class="phn">
+            <input type="tel" name="ph" id="ph" pattern="[0-9]{10}" placeholder="PhoneNumber" required>       
+        </div>
+        <input type="text" name="aid" id="aid" hidden>
+        <button type="submit" class="changeAdd">Add / Update Address</button>
+        <button class="closeFrm">Close</button>
+         
+    </form>
+</div>
+<div class="card-det">
+    <div class="left-col">
+        <div class="order">
+            <button class="addOpt" style="color:white;background-color:transparent;border:none;cursor:pointer"><i class="fa-solid fa-plus"></i> Add New Address</button>
+            <div class="order-header">
+                <div class="hd address">Address</div>
+                 
+            </div>
+            <div class="order-body" data-uid="{{id}}" id="orderBody">
+                 {{!-- //Data is Embedded --}}
+                  
+            </div>
+        </div>
+        <div class="order"></div>
+            <div class="order-header">
+                <div class="hd address">Shipping Address</div>
+            </div>
+            <div class="shipping-order-body" id="shipBody" >
+                 <div class="order-row" data-aid=${addr._id}>
+                    <div class="td address-det">
+                            <h3>No Shipping Address Selected</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let addOpt  = document.querySelector(".addOpt");
+    let checkoutForm = document.querySelector(".checkout-bs-form");
+    let form = document.querySelector(".checkout-bs-form form");
+    let closeFrm = document.querySelector(".closeFrm");
+    let changeAdd = document.querySelector(".changeAdd");
+    let orderBody = document.getElementById("orderBody");
+    let uid = orderBody.dataset.uid;
+    let shipOrderBody = document.getElementById("shipBody");
+
+    //Specific Cookie Extractor code am AMIGOS********
+    let cookieHeaderValue = document.cookie;
+    let token = null;
+
+    if (cookieHeaderValue) {
+    let cookies = cookieHeaderValue.split(";");
+    for (let cookie of cookies) {
+        let [cookieName, cookieValue] = cookie.trim().split("=");
+        if (cookieName === "token") {
+        token = cookieValue;
+        break;
+        }
+    }
+    }
+    //Specific Cookie Extractor code am AMIGOS********
+
+    addOpt.addEventListener("click",()=>{
+        checkoutForm.style.display="flex";
+        document.querySelector("#country").value = "";
+        document.querySelector("#fName").value = "";
+        document.querySelector("#lName").value ="";
+        document.querySelector("#addr").value = "";
+        document.querySelector("#city").value = "";
+        document.querySelector("#state").value ="";
+        document.querySelector("#pinCode").value = "";
+        document.querySelector("#ph").value = "";
+        document.querySelector("#aid").value = "";
+    })
+    closeFrm.addEventListener("click",()=>{
+        checkoutForm.style.display="none";
+    })
+    
+    
+    //UPDATION
+
+    async function openForm(aid){
+         
+        let dataD = await fetch(`/api/users/addr/${uid}`);
+        let data = await dataD.json();
+ 
+        let info = data.addresses.find(val=>val.addrId._id==aid)
+        checkoutForm.style.display="flex";
+     
+        document.querySelector("#country").value = info.addrId.country;
+        document.querySelector("#fName").value = info.addrId.fName;
+        document.querySelector("#lName").value = info.addrId.lName;
+        document.querySelector("#addr").value = info.addrId.addr;
+        document.querySelector("#city").value = info.addrId.city;
+        document.querySelector("#state").value = info.addrId.state;
+        document.querySelector("#pinCode").value = info.addrId.pinCode;
+        document.querySelector("#ph").value = info.addrId.ph;
+        document.querySelector("#aid").value = aid;
+    }
+
+    //UPDATION
+
+
+    //FORM SUBMISSION AFTER MODIFICATION
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const country = formData.get("country");
+        const fName = formData.get("fName");
+        const lName = formData.get("lName");
+        const addr = formData.get("addr");
+        const city = formData.get("city");
+        const state = formData.get("state");
+        const pinCode = formData.get("pinCode");
+        const ph = formData.get("ph");
+        const aid = formData.get("aid")
+
+        const body = {
+         country,
+         fName,
+         lName,
+         addr,
+         city,
+         state,
+         pinCode,
+         ph,
+         aid
+        };
+
+        try {
+        const response = await fetch(`/handleAddr/add/${token}`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        });
+        if (!response.ok) {
+            throw new Error("Request failed with status: " + response.status);
+        }
+        // Hide the form
+         checkoutForm.style.display = "none";
+          run(`api/users/addr/${uid}`);
+        } catch (error) {
+        console.log("Error:", error.message);
+        }
+    });
+    //FORM SUBMISSION AFTER MODIFICATION
+    function select(addrId) {
+        fetch(`/api/users/addr/select/${addrId}`, {
+            method: 'POST',
+        })
+            .then(response => response.json())
+            .then(data => {
+            // Handle the response data if needed
+            run(`api/users/addr/${uid}`);
+            console.log(data);
+            })
+            .catch(error => {
+            // Handle any errors
+            console.error(error);
+            });
+        }
+
+    function del(addrId) {
+        fetch(`/api/users/addr/delete/${addrId}`, {
+            method: 'DELETE',
+        })
+            .then(response => response.json())
+            .then(data => {
+            // Handle the response data if needed
+            run(`/api/users/addr/${uid}`);
+            console.log(data);
+            })
+            .catch(error => {
+            // Handle any errors
+            console.error(error);
+            });
+    }
+
+
+    //Run the Function Amigos
+    async function run(url){
+        try {
+            const response = await fetch(url); // Replace with your API endpoint URL
+            if (!response.ok) {
+            throw new Error('Request failed with status: ' + response.status);
+            }
+            const r = await response.json();
+            orderBody.innerHTML=""; 
+            if(r.total==0){           
+                orderBody.innerHTML=`<div class="cart-row" style="justify-content:center">
+                    <div class="td">No Adress Added</div>
+                </div>`;
+            }
+            
+ 
+            r.addresses.forEach(addr=>{
+                orderBody.innerHTML+=`<div class="order-row" data-aid=${addr._id}>
+                    <div class="td address-det">
+                            <h3>${addr.addrId.fName} ${addr.addrId.lName}, ${addr.addrId.addr}, ${addr.addrId.city} ,${addr.addrId.state},${addr.addrId.country}, zip: ${addr.addrId.pinCode}
+                            </h3>
+                    </div>
+                    <div class="td options"> 
+                        <div class="add-updt" style="color:gold">
+                             <button onclick="openForm('${addr.addrId._id}')">Update</button>
+                        </div>
+                        <div class="add-choose" style="color:gold">
+                             <button onclick="select('${addr.addrId._id}')">Select</button>
+                        </div>
+                        <div class="add-del">
+                            <button onclick="del('${addr.addrId._id}')">Delete</button>
+                        </div>
+                    </div>
+                </div>`;
+            })
+            
+            r.addresses.forEach(addr=>{
+                 
+                if(addr.addrId.isShippingAddress){
+                    shipOrderBody.innerHTML=`<div class="order-row" data-aid=${addr._id}>
+                    <div class="td address-det">
+                            <h3>${addr.addrId.fName} ${addr.addrId.lName}, ${addr.addrId.addr}, ${addr.addrId.city} ,${addr.addrId.state},${addr.addrId.country}, zip: ${addr.addrId.pinCode}
+                            </h3>
+                    </div>
+                    
+                </div>`;
+                } 
+            })
+
+        } catch (error) {
+            // Handle any errors that occurred during the fetch
+            console.log('Error:', error.message);
+                
+        }
+    }
+    document.addEventListener("DOMContentLoaded", async function() {
+        // DOM manipulation and other code here
+          run(`api/users/addr/${uid}`);
+    });
+</script>

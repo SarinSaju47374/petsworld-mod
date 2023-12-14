@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/styles/productAdd.css">
+</head>
+<body>
+    <main style="margin-left:20rem; ">
+			<div class="head-title">
+				<div class="left">
+					<h1 style="color:var(--dark); display:inline-block">Dashboard</h1>
+					<ul class="breadcrumb" style="display:flex;">
+						<li>
+							<a href="#" style="color:var(--dark); ">Dashboard</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="/product-view" style="color:var(--dark);">Products</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#" style="color:var(--dark);">ProductsUpdate</a>
+						</li>
+					</ul>
+				</div>
+				 
+			</div>
+  </main>
+    <section class="admin-content">
+        <h1>{{product.id}}</h1>
+         
+        <form action="/product-view" method="POST">
+            <input type="text" name="oid" value="{{product._id}}" readonly>
+            <input type="text" name="productName" value="{{product.productName}}" placeholder="Enter the Product Name..">
+            <input type="text" name="description" value="{{product.description}}" placeholder="Enter Description..">
+            <input type="text" name="points" value="{{joinPoints product.points}}" placeholder="Enter the points...">
+            <input type="number" name="productPrice" value="{{product.productPrice}}" placeholder="Product Price..">
+            <input type="number" name="salePrice" value="{{product.salePrice}}" placeholder="Enter the Sale Price">
+            <input type="number" name="stock" value="{{product.stock}}" placeholder="Enter the Stock">
+            <input type="text" name="category" value="{{product.category}}" placeholder="Category">
+            <input type="text" name="subCategory" value="{{product.subCategory}}" placeholder="SubCategory">
+            <input type="text" name="paymentOption" value="{{product.paymentOption}}" placeholder="Payment Option">
+            <input type="number" name="rating" value="{{product.rating}}" placeholder="Initial rating">
+            <button class="admin-content-btn" type="submit">
+                UPDATE
+            </button>
+        </form>
+    </section>
+</body>
+
+</html>

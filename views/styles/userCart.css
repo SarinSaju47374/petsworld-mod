@@ -1,0 +1,223 @@
+:root {
+    --main-body: #0b243b;
+    --main-text: #fff;
+    font-family: sans-serif;
+    --dark-text:black;
+  }
+
+.card-det{
+    width:90%;
+    /* border:1px solid white; */
+    margin:2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.left-col{
+    width:100%;
+}
+.right-col{
+    width:100%;
+}
+.left-col .cart{
+    width:100%;
+}
+.hd{
+    /* border:1px solid white; */
+}
+.cart-header{
+    width:100%;
+    display:flex;
+    /* border:1px solid white; */
+    padding:1rem;
+    box-sizing: border-box;
+    justify-content: space-between;
+    background-color: #1C3E5A;
+}
+
+/* applies both in row and header */
+.products{
+    width:43%;
+    
+}
+.price{
+    display: none;
+}
+.quantity{
+    width:20%;
+    text-align: center;
+    
+}
+.total{
+    width:24%;
+    text-align: center;
+    
+}
+.purchase{
+    width:20%;
+    text-align: center;
+}
+/* applies both in row and header */
+.cart-row{
+    position:relative;
+    display: flex;
+    margin-top:1rem;
+    /* border:1px solid white; */
+    padding:1rem;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #0D2B47;
+}
+.close{
+    position: absolute;
+    top:1rem;
+    right:1rem;
+    background-color: transparent;
+    border:none;
+    color:white;
+    cursor: pointer;
+}
+.close:hover{
+    font-size: 1rem;
+}
+.cart-row img{
+    width:5rem;
+}
+.cart-row h3{
+    font-size: clamp(0.56rem,.85rem,1rem);
+}
+.cart-row p{
+    font-size: clamp(0.56rem,.85rem,1rem);
+}
+.mobile-input {
+    width: 0.75rem;
+    text-align: center;
+    padding: 10px;
+    font-size: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #0b243b;
+    color: white;
+    border:1px solid white;
+}
+.mobile-input::placeholder {
+color: rgba(255, 255, 255, 0.7);
+}
+ 
+.right-col{
+    width:100%;
+    /* border:1px solid white; */
+    margin-top:2rem;
+}
+.order-summary{
+    width:100%;
+}
+.order-summary h3{
+    width:100%;
+    /* text-align: left; */
+    border-bottom: 2px solid white;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+.order-summary .total,.order-summary .subTotal{
+    box-sizing: border-box;
+    display: flex;
+    width:100%;
+    justify-content: space-between;
+    align-items: center;
+    padding:.35rem;
+}
+.order-summary .subTotal{
+    border-bottom: 2px solid rgb(131, 128, 128);
+    color:rgb(210, 205, 205);
+}
+.order-summary .total{
+    margin-top:1rem;
+    border-top: 2px solid rgb(131, 128, 128);
+    border-bottom: 2px solid rgb(131, 128, 128);
+}
+.right-col .options{
+    margin-top: 0.35rem;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+}
+.right-col .options .checkout,.options .shopping{
+    padding:0.75rem;
+    border-radius:1rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: .24rem;
+    background-color: #f55157;
+    color:white;
+    margin-top: 1rem;
+    border:none;
+}
+.right-col .options .shopping{
+    background-color: #4d4949;
+}
+ 
+/* Computer screen */
+@media screen and (min-width: 700px) {
+.search-cont{
+    width:30%;
+}
+.card-det{
+    width:80%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.mobile-input{
+    width:2rem;
+    font-size: 1rem;;
+}
+.right-col{
+    width:25%;
+    margin-top:0;
+}
+.cart-row,.cart-header{
+    justify-content: space-between;
+}
+
+.left-col{
+    width:70%;
+}
+ 
+/* applies both in row and header */
+.products{
+    width:42%;
+ 
+}
+.price{
+    display: block;
+    width:14%;
+    display: flex;
+    justify-content: center;
+
+}
+.quantity{
+    width:14%;
+    display: flex;
+    justify-content: center;
+}
+.total{
+    width:14%;
+    display: flex;
+    justify-content: center;
+}
+.purchase{
+    width:14%;
+    display: flex;
+    justify-content: center;
+}
+/* applies both in row and header */
+.cart-row .td{
+    display: flex;
+    /* justify-content: space-between; */
+}
+.cart-row img{
+    width:8rem;
+    margin-right:1rem;
+}
+}

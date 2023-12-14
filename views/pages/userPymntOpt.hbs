@@ -1,0 +1,300 @@
+<link rel="stylesheet" href="/styles/userPymnt.css">
+ 
+<div class="page" style="color:rgb(224, 168, 66);margin:1rem auto;font-size:2rem;font-weight:900;letter-spacing:.45rem;display:flex;align-items:center;height:5rem;overflow:hidden;">
+    <img src="https://png.pngtree.com/png-vector/20230120/ourmid/pngtree-veterinary-design-vet-clipart-puppy-cute-cat-logo-png-image_6565444.png" alt="" style="width:8rem;">
+    PAYMENT OPTION
+</div>
+<div class="checkout-bs-page">
+    <div class="checkout-bs-form">
+        <div class="address-det">
+            <div class="contact">
+                <h4>
+                    CONTACT
+                </h4>
+                <p>
+                    {{addr.ph}}
+                </p>
+                <a href="/address">
+                    Change
+                </a>
+            </div>
+            <div class="add">
+                <h4>
+                    SHIP TO
+                </h4>
+                <p style="
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                ">
+                    {{addr.addr}},{{addr.city}},{{addr.state}},{{addr.country}},{{addr.pinCode}}
+                </p>
+                <a href="/address">
+                    Change
+                </a>
+            </div>
+        </div>
+        <div class="payment-det">
+            <form  action="#" onsubmit="initPay(event,'{{idType}}','{{id}}')" method="POST">
+                <label class="pymnt-option" for="pymnt-online">
+                    <input type="radio" name="pymnt" id="pymnt-online" value="online" required>
+                    <h3>Online Payment - Free Delivery</h3>
+                    <p>Free</p>
+                </label>
+                <label class="pymnt-option"  for="pymnt-cod">
+                    <input type="radio" name="pymnt" id="pymnt-cod" value="cod" required>
+                    <h3>Cash On Delivery</h3>
+                    <p class="amount">Rs {{calculateTotal item}}</p>
+                </label>
+                <input id="walletCheckbox" type="checkbox" class="wallet-checkbox" onchange="toggleRadioButton()">
+                <label for="walletCheckbox" class="wallet-label">Wallet</label>
+                <input type="text" value="{{idType}}" hidden>
+                <div class="action-frm">
+                    <button type = "submit">Pay</button>
+                </div>
+            </form>
+            <a href="/cart" class="bck-cart"><i class="fa-solid fa-caret-left"></i> Back to cart</a>
+        </div>
+        <div class="payment-action">
+            <a href="#"></a>
+        </div>
+    </div>
+    <div class="card-det">
+    <div class="top-col">
+        <div class="cart">
+            <div class="cart-header">
+                <div class="hd products">Products</div>
+                <div class="hd price">Price</div>
+                <div class="hd quantity">Quantity</div>
+                <div class="hd total">Total</div>
+            </div>
+            <div class="cart-body">
+                {{#each item}}
+                    <div class="cart-row">
+                        <div class="td products">
+                            <img src="{{this.productId.photo.[0].filepath}}" alt="">
+                            <div class="prod-det">
+                                <h3>{{this.productId.productName}}</h3>
+                                <p>{{this.productId.brandName}}</p>
+                            </div>
+                        </div>
+                        <div class="td price">Rs {{this.productId.salePrice}}</div>
+                        <div class="td quantity"><input type="number" class="mobile-input" value="{{this.quantity}}" placeholder="Qnty" readonly></div>
+                        <div class="td total">{{multiply this.productId.salePrice this.quantity}}</div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="bottom-col">
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+             <div class="subTotal">
+                <span>Sub Total:</span>
+                <h5 class="amount">Rs {{calculateTotal item}}</h5>
+             </div>
+             <div class="total">
+                <span>Total:</span>
+                <h5 class="amount">Rs {{calculateTotal item}}</h5>
+             </div>
+             <div class="options">
+                 
+                <div class="custom-select" id="couponSelectWrapper">
+                    <i class="fa-solid fa-gift"></i>
+                    <select class="form-select" id="couponSelect">
+                        <option selected disabled value="">Select Coupon </option>
+                        <option value="">No Coupon Needed</option>
+                        {{!-- Dynamic Data --}}
+                    </select>
+                </div>
+             </div> 
+        </div>
+    </div>
+</div>
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+     const onlinePaymentRadio = document.getElementById('pymnt-online');
+    const codPaymentRadio = document.getElementById('pymnt-cod');
+
+    var search2 = document.getElementById("coup")
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded');
+        fetchCoupon();
+        onlinePaymentRadio.addEventListener('change', function() {
+        pymnt = "online";
+        });
+
+        codPaymentRadio.addEventListener('change', function() {
+        pymnt = "cod";
+        });
+
+         select.addEventListener("change",function(){
+            const selectedOption = select.options[select.selectedIndex];
+            couponName = selectedOption.textContent;
+            console.log(couponName);
+            console.log(`/cart/pymnt2/chkout/${couponName?couponName:""}`)
+            if(select.value!=""){
+                let display = amnt-(amnt*Number(select.value)/100);
+                amountDivs[0].innerHTML=`Rs ${display}`;
+                amountDivs[1].innerHTML=`Rs ${display}`;
+                amountDivs[2].innerHTML=`Rs ${display}`;
+            }else{
+                amountDivs[0].innerHTML=`Rs ${amnt}`;
+                amountDivs[1].innerHTML=`Rs ${amnt}`;
+                amountDivs[2].innerHTML=`Rs ${amnt}`;
+            }
+            
+        })
+  });
+    var ul2 = document.querySelector(".coupon-parent ul")
+    let select = document.getElementById("couponSelect");
+    let amountDivs = document.getElementsByClassName("amount");
+    //coupon apply look
+    let amnt = Number(amountDivs[2].textContent.split(" ")[1]);
+    //coupon apply look
+
+    //Typing Animation
+    let i=0;
+    let placeholder="";
+    var couponName;
+    const txt="Search in Cart....";
+    const speed=120;
+    function type(){
+        placeholder+=txt.charAt(i);
+        if(i<txt.length){
+            document.querySelector(".search-cont input").setAttribute("placeholder",placeholder)
+            i++;
+        }else{
+             i=0;
+             placeholder="";
+        }
+        setTimeout(type,speed);
+    }
+    type(); 
+    //Typing Animation
+
+    var pymnt;
+        
+    codPaymentRadio.addEventListener('change', function() {
+        console.log("Cash on Delivery selected");
+    });
+
+    var checkbox=false;
+    function toggleRadioButton() {
+        checkbox = document.getElementById("walletCheckbox").checked;
+        var radioButton = document.getElementById("pymnt-cod");
+
+        if (checkbox) {
+            radioButton.disabled = true;
+        } else {
+            radioButton.disabled = false;
+        }
+    }
+
+    async function srch(url){
+        ul2.innerHTML="";
+        try{        
+            let data=await fetch(url);
+            let pr = await data.json();
+            pr.products.forEach(p=>{
+            ul2.innerHTML+=`<li><a href="/product-descr?oid=${p._id}">${p.productName}</a></li>`
+            })
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+
+    async function fetchCoupon(){
+        try{
+            let data = await fetch("/custom/user-coupone");
+            let coupons = await data.json();
+            coupons.forEach(val=>{
+                select.innerHTML+=`<option value="${val.discount}">${val.coupon}</option>`;
+            })
+        }catch(err){
+            console.log("The error is in fetchCoupon: ",err);
+        }
+    }
+
+   
+    async function initPay(e,idType, id) {
+        e.preventDefault();
+        if(pymnt=="cod"){
+            alert(couponName)
+            let link = await fetch(`/cart/pymnt2/chkout/${idType}/${id}`,{
+                method: 'POST',
+                body:JSON.stringify({pymnt:"cod",couponName:couponName}),
+                headers: {
+                'Content-Type': 'application/json'
+                }
+            });
+            let urlData = await link.json();
+            window.location.href=urlData.url;
+
+        }else if(pymnt=="online"){
+            let order = await fetch(`/cart/pymnt2/chkout/${idType}/${id}`,{
+                method: 'POST',
+                body:JSON.stringify({pymnt:"online",couponName:couponName,wallet:checkbox}),
+                headers: {
+                'Content-Type': 'application/json'
+                }
+            });
+            let ordr = await order.json();
+
+            if(ordr.url){
+                window.location.href=ordr.url;
+            }else{
+                var options = {
+                    "key": ordr.id, // Enter the Key ID generated from the Dashboard
+                    "amount": ordr.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                    "currency": "INR",
+                    "name": "Pets World",
+                    "description": "Test Transaction",
+                    "order_id": ordr.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                    "handler": function (response){
+                        verifyPayment(response,ordr,idType,id);
+                    },
+                    "notes": {
+                        "address": "Razorpay Corporate Office"
+                    },
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response){
+                        alert(response.error.code);
+                        alert(response.error.description);
+                        alert(response.error.source);
+                        alert(response.error.step);
+                        alert(response.error.reason);
+                        alert(response.error.metadata.order_id);
+                        alert(response.error.metadata.payment_id);
+                });
+                rzp1.open();
+            }
+        }
+    }
+    //Form Submission
+    async function verifyPayment(response,ordr,idType,id){
+        let data = {
+            ordr,
+            response:response,
+            idType:idType,
+            id:id
+        }
+        let verify = await fetch(`/cart/pymnt/verify`,{
+                method: 'POST',
+                body:JSON.stringify(data),
+                headers: {
+                'Content-Type': 'application/json'
+                }
+        })
+        let urlData = await verify.json();
+        window.location.href=urlData.url;
+    }
+    //Coupon Check
+    
+    
+    //Coupon Check
+</script>

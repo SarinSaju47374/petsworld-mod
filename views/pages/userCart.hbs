@@ -1,0 +1,176 @@
+<link rel="stylesheet" href="/styles/userCart.css"> 
+
+ 
+    {{#if popped}}
+        <div class="popped"></div>
+    {{/if}}
+ 
+<div class="page" style="color:rgb(224, 168, 66);margin:0.45rem auto;font-size:2rem;font-weight:900;letter-spacing:.45rem;display:flex;align-items:center;height:4rem;overflow:hidden;">
+    <img src="https://png.pngtree.com/png-vector/20230120/ourmid/pngtree-dog-logo-veterinary-design-clipart-vet-golden-retriever-puppy-clinic-png-image_6565449.png" alt="" style="width:8rem;">
+    CART
+</div>
+<div class="card-det">
+    <div class="left-col">
+        <div class="cart">
+            <div class="cart-header">
+                <div class="hd products">Products</div>
+                <div class="hd price">Price</div>
+                <div class="hd quantity">Quantity</div> 
+                <div class="hd total">Total</div>
+               
+            </div>
+            <div class="cart-body" data-id="{{id}}">
+                 <img src="https://png.pngtree.com/png-vector/20201225/ourlarge/pngtree-default-page-blank-page-app-shopping-cart-empty-no-data-no-png-image_2601661.jpg" alt="">
+                 {{!-- //Data will be embedded amigos using fetch      --}}
+            </div>
+        </div>
+    </div>
+    <div class="right-col">
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+             <div class="subTotal">
+                <span>Sub Total:</span>
+                <h5></h5>
+             </div>
+             <div class="total">
+                <span>Total:</span>
+                <h5></h5>
+             </div>
+             <div class="options">
+                <a class="checkout" href="/cart/checkout">Checkout</a>
+                <a class="shopping" href="/">Continue Shopping</a>
+             </div> 
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+<script>
+    let cartBody = document.querySelector(".cart-body");
+    let id = cartBody.dataset.id;
+    let total = document.querySelector(".total h5");
+    let subTotal = document.querySelector(".subTotal h5");
+     async function updateQuantity(input, prid) {
+        const productId = prid;
+        const quantity = input.value;
+
+        try {
+            const response = await fetch('/api/updateCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId, quantity })
+            });
+
+            const data = await response.json();
+            console.log(data); // Handle the response data as needed
+
+            // Update the total column in the cart row
+            run(`/api/cart/${id}`);
+
+        } catch (error) {
+            console.log(error); // Handle the error
+        }
+        }
+    async function closeCart(iid){//Item Id 
+        {{!-- alert("closed"); --}}
+        let itemId = iid;
+        try{
+            const response = await fetch('/api/deleteCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({itemId})
+            })
+            const data = await response.json();
+            console.log(data); // Handle the response data as needed
+
+            // Update the total column in the cart row
+            run(`/api/cart/${id}`);
+        }catch(err){
+            console.log("Error: ",err)
+        }
+    }
+
+    async function run(url){
+        try {
+            const response = await fetch(url); // Replace with your API endpoint URL
+            console.log("I have fetched the data in user Cart hbs")
+            if (!response.ok) {
+            throw new Error('Request failed with status: ' + response.status);
+            }
+            const pr = await response.json();
+            cartBody.innerHTML="";
+            if(pr.total==0){
+                cartBody.innerHTML=`<div class="cart-row" style="justify-content:center">
+                     
+                    <div class="td">Nothing In Cart</div>
+    
+                </div>`;
+            }
+            
+            
+            console.log(pr);
+            pr.products.forEach(p=>{
+                cartBody.innerHTML+=`<div class="cart-row">
+                    <button class="close" onclick="closeCart('${p._id}')"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="td products">
+                        <img src="${p.productId.photo[0].filepath}" alt="${p.productId.photo[0].title}">
+                        <div class="prod-det">
+                            <h3>${p.productId.productName}</h3>
+                            <p>${p.productId.brandName}</p>
+                        </div>
+                    </div>
+                    <div class="td price">Rs ${p.productId.salePrice}</div>
+                    <div class="td quantity"><input type="number" class="mobile-input" min="1" max="${p.productId.stock}" value="${p.quantity}" placeholder="Qnty" onchange="updateQuantity(this,'${p.productId._id}')"></div>
+                    <div class="td total">Rs ${p.productId.salePrice*p.quantity}</div>
+                    {{!-- <div class="td purchase"><a href="/cart/checkout/item/${p._id}"><i class="fa-solid fa-bag-shopping" style="color:white"></i></a></div> --}}
+                </div>`;
+            })
+
+            //Quantity Change Control
+
+            
+            //Temporary Data
+            total.textContent = "Rs "+pr.totalPrice;
+            subTotal.textContent = "Rs "+pr.totalPrice;
+
+
+        } catch (error) {
+            // Handle any errors that occurred during the fetch
+            console.log('Error:', error.message);
+                
+        }
+    }
+    let i=0;
+    let placeholder="";
+    const txt="Search in Cart....";
+    const speed=120;
+    function type(){
+        placeholder+=txt.charAt(i);
+        if(i<txt.length){
+            document.querySelector(".search-cont input").setAttribute("placeholder",placeholder)
+            i++;
+        }else{
+             i=0;
+             placeholder="";
+        }
+        setTimeout(type,speed);
+    }
+    type(); 
+    {{!-- document.cookie.split("=")[0] --}}
+    document.addEventListener("DOMContentLoaded", async function() {
+        // DOM manipulation and other code here
+          run(`/api/cart/${id}`);
+        });
+    
+    if(document.querySelector(".popped")){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Cant Checkout the EMPTY CART!',
+            footer: '<a href="/">Lets DO SHOPPING!</a>'
+        })
+    }
+</script>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/userProfile.css">
+  <title>Profile Page</title>
+</head>
+<body>
+  <div class="checkout-bs-form">
+    <form method="POST" id ="myForm" onsubmit="submitFrm(event)">
+        <div class="fullName">
+                <input type="text" name="fName" id="fName" placeholder="FirstName" required> 
+                <input type="text" name="lName" id="lName" placeholder="LastName" required> 
+        </div>
+        <div class="phn" style="display:flex;margin-top:2rem;">
+            <input type="tel" name="ph" id="ph" pattern="[0-9]{10}" placeholder="PhoneNumber" style="flex:1;" maxlength="10" required>       
+        </div>
+        <input type="text" name="aid" id="aid" hidden>
+        <div class="btns">
+          <button type="submit" class="changeAdd">EDIT</button>
+          <button type="button" class="closeFrm" onclick="clsFrm()">Close</button>
+        </div>
+    </form>
+</div>
+  <div class="profile-container">
+    <div class="crd">
+      <div class="profile-photo">
+       <label for="upload-photo">
+        <input type="file" id="upload-photo" accept="image/*">
+        {{#if user.photo}}
+          <img id="profile-image" name="photo" src="{{parser user.photo}}" alt="Profile Photo">
+          {{else}}
+          <img id="profile-image" name="photo" src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/unknown2-512.png" alt="Profile Photo">       
+        {{/if}}
+        <span id="upload-label">Click to upload</span>
+      </label>
+      </div>
+      <div class="crd-content">
+        <h2>{{user.fName}} {{user.lName}}</h2> 
+        <section class="crd-section">
+          
+           <div class="btns">
+             <button id="ordr-hist" onclick="window.location.href='/order-history'">Order History</button>
+             <button id="addr" onclick="window.location.href='/address'">Edit Address</button>
+             <button id="prof" onclick="openFrm()">Edit Profile</button>
+           </div>
+        </section>
+      </div>
+    </div>
+    <div class="crd">
+       
+      <div class="card-content">
+        <header>
+          <h1>Wallet</h1>
+        </header>
+        <section class="crd-section">
+          <h2>Wallet Details</h2>
+          <p>Balance: {{wallet.balance}}</p>
+          <button style="background-color:transparent;border:1px solid white;cursor:pointer;border-radius:12px;padding:.55rem;color:white;margin-top:.55rem;" onclick="window.location.href='/wallet-hist'">Wallet History</button>
+        </section>
+      </div>
+    </div>
+    <div class="crd">
+ 
+      <div class="crd-content">
+        <header>
+          <h1>Other Details</h1>
+        </header>
+        <section class="crd-section">
+          <h2>Contact Information</h2>
+          <p>Email: {{user.email}}</p>
+          <p>Phone: +91{{user.phoneNumber}}</p>
+        </section>
+      </div>
+    </div>
+    <div class="crd">
+      <div class="crd-content">
+          <header>
+          <h1> Shipping Address</h1>
+        </header>
+        <section class="crd-section">
+          <h2>Address</h2>
+          <p>{{addr.addr}}, {{addr.city}}, {{addr.state}}, {{addr.country}}, {{addr.pinCode}}</p>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script>
+    const uploadPhotoInput = document.getElementById('upload-photo');
+    const profileImage = document.querySelector('.profile-photo img');
+    const frm = document.querySelector(".checkout-bs-form")
+
+    //Specific Cookie Extractor code am AMIGOS********
+    let cookieHeaderValue = document.cookie;
+    let token = null;
+
+    if (cookieHeaderValue) {
+    let cookies = cookieHeaderValue.split(";");
+    for (let cookie of cookies) {
+        let [cookieName, cookieValue] = cookie.trim().split("=");
+        if (cookieName === "token") {
+        token = cookieValue;
+        break;
+        }
+    }
+    }
+    //Specific Cookie Extractor code am AMIGOS********
+
+    uploadPhotoInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function() {
+        profileImage.src = reader.result;
+        };
+
+        reader.readAsDataURL(file);
+        
+        const formData = new FormData();
+        formData.append('photo', file);
+        fetch('/profile/photo', {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then(data => {
+            // Handle the response from the server, such as updating the UI or saving the photo URL to the database
+            console.log(data.imageUrl);
+          })
+          .catch(error => {
+            // Handle any errors that occur during the upload process
+            console.error(error);
+          });
+    } else {
+        profileImage.src = 'https://cdn0.iconfinder.com/data/icons/user-pictures/100/unknown2-512.png';
+    }
+    });
+    async function openFrm(){
+      frm.style.display="block";
+      try{
+        let response = await fetch(`/api/users/${token}`)
+        let data = await response.json();
+        if(!response.ok) console.log("The response is not received!");
+        document.getElementById("fName").value=data.fName;
+        document.getElementById("lName").value=data.lName;
+        document.getElementById("ph").value=data.phoneNumber;
+      }catch(err){
+        console.log("There is a error : ",err)
+      }
+    }
+    function clsFrm(){  
+      frm.style.display="none";  
+    }
+    async function submitFrm(e){
+      
+      e.preventDefault();
+      const form = document.getElementById('myForm');
+      const data = new FormData(form)
+      // Populate the JavaScript object with form data
+      let obj = {};
+      for (let [key, value] of data.entries()) {
+        obj[key] = value;
+      }
+       
+      try {
+      const response = await fetch(`/api/users/update/${token}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json' // Set the content type to JSON
+        },
+        body: JSON.stringify(obj)
+      });
+
+      if (response.ok) {
+        // Handle successful form submission
+        console.log('Form submitted successfully!');
+        // Optionally, reset the form or perform any other action
+        form.reset();      
+        window.location.href='/profile'
+      } else {
+        // Handle form submission error
+        console.log('Form submission failed!');
+      }
+    } catch (error) {
+      // Handle network error or other issues
+      console.log('Error submitting form:', error);
+    }
+    }
+
+     
+  </script>
+</body>
+</html>

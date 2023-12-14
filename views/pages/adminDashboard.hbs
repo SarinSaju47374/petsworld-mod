@@ -1,0 +1,235 @@
+<main>
+<h1>DashBoard</h1>
+ 
+ 
+{{!-- Product Add --}}
+
+<div class="table-admin">
+    <h2>View the DashBoard</h2> 
+     
+    <div class="preview">
+             <div class="dashboard-cards">
+            <div class="card">
+                <i class="fa-solid fa-users"></i>
+                <h2>Users</h2>
+                <p id="total-users">Loading...</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-chart-pie"></i>
+                <h2>Sales</h2>
+                <p id="total-sales">Loading...</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-chart-line"></i>
+                <h2>Products</h2>
+                <p id="total-products">Loading...</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-shapes"></i>
+                <h2>Categories</h2>
+                <p id="total-categories">Loading...</p>
+            </div>
+            </div>
+    </div>
+
+     <div class="doughnut">
+        <div class="pymntMode">
+            <h2>COD vs ONLINE</h2>
+            <canvas id="pymnt"></canvas>
+        </div> 
+        <div class="ordr">
+            <h2>Orders Cancelled vs Placed</h2>
+            <canvas id="orderStats"></canvas>
+        </div> 
+     </div>
+</div>
+
+{{!-- END OF ORDERS --}}
+{{!-- FORM FOR MODIFYING EXISTING DATA --}}
+  <div class="order-popup">
+     <h2>Modify Product</h2>
+     <i class="fa-solid fa-xmark"></i>
+    <form id="modify-order-form">
+         <table>
+            <thead>
+            <tr>
+                <th>OrderId</th>
+                <th>Name</th>
+                <th>Delivery Address</th>
+                <th>Total Amount</th>
+                <th>Product Name</th>
+                <th>Payment Mode</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+                {{!-- <tr>
+                <td>OrderId</td>
+                <td>First Name</td>
+                <td>Delivery Address</td>
+                <td>Total Amount</td>
+<td>Payment Mode</td>
+                <td>
+                    <select class="order-status-dropdown">
+                        <option value="orderPlaced">Order Placed</option>
+                        <option value="orderShipped">Order Shipped</option>
+                        <option value="orderOnRoute">Order On-Route</option>
+                        <option value="orderDelivered">Order Delivered</option>
+                        <option value="orderCancelled">Order Cancelled</option>
+                    </select>
+                </td>
+            </tr> --}}
+            </tbody>
+        </table>
+    </form>
+
+  </div>
+  {{!-- END OF FORM FOR MODIFYING EXISTING DATA --}}
+</main>
+
+{{!-- END OF MAIN --}}
+
+<div class="right">
+    <div class="top">
+        <button id="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="theme-toggler">
+            <i class="fa-solid fa-sun active"></i>
+            <i class="fa-solid fa-moon"></i>
+        </div>
+        <div class="profile">
+            <div class="info">
+                <p>Hey , <b>Sarin </b></p>
+                <small class="text-muted">ADMIN</small>
+            </div>
+            <div class="profile-photo">
+                <img src="/images/profile.jpg" alt="#">
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+ <script>
+  const pymnt = document.getElementById('pymnt');
+  const ordrStats = document.getElementById('orderStats');
+  let p = document.querySelectorAll(".preview .card p");
+  let placed;
+  let cancelled;
+  let cod;
+  let online;
+  let toal
+  let categories;
+  let users;
+  let products;
+  document.addEventListener("DOMContentLoaded",async()=>{
+    let data = await fetch('/data')
+        let det = await data.json();
+        placed=det.placed;
+        cancelled=det.cancelled;
+        cod=det.cod;
+        online=det.online;
+        total=det.total;
+        categories=det.categories;
+        users=det.users;
+        products=det.products
+    console.log(cod,online);
+      new Chart(pymnt, {
+    type: 'doughnut',
+    data: {
+  labels: [
+    'COD',
+    'ONLINE',
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [cod,online],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+    ],
+    hoverOffset: 4
+  }]
+},
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+
+  new Chart(ordrStats, {
+    type: 'doughnut',
+    data: {
+  labels: [
+    'Cancelled',
+    'Placed',
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [cancelled,placed],
+    backgroundColor: [
+      'rgb(115 128 236)',
+      'rgb(250 158 86)',
+    ],
+    hoverOffset: 4
+  }]
+},
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  p[0].innerHTML=users;
+  p[1].innerHTML=`Rs ${total}`;
+  p[2].innerHTML=products;
+  p[3].innerHTML=categories;
+ 
+  })
+
+
+
+async function fetchData(){
+    try{
+        let data = await fetch('/data')
+        let det = await data.json();
+        placed=det.placed;
+        cancelled=det.cancelled;
+        cod=det.cod;
+        online=det.online;
+        total=det.total;
+        categories=det.categories;
+        users=det.users;
+        products=det.products
+    }catch(err){
+        console.log(err);
+    }
+}
+</script>
+
+<script src="/JS/adminContent.js"></script>
+<script>
+    const sideBarOpts = document.querySelectorAll(".sidebar a");
+     
+
+    sideBarOpts.forEach(a=>{
+        a.classList.remove("active");
+    })
+    sideBarOpts[0].classList.add("active");
+</script>
+
+  
+
+
+
+</body>
+</html>

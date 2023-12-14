@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="/styles/userOrderHistory.css">
+ 
+<div class="page" style="color:rgb(224, 168, 66);margin:0.45rem auto;font-size:1rem;font-weight:900;letter-spacing:.45rem;display:flex;align-items:center;justify-content:center;height:4rem;overflow:hidden;width:90%">
+    <img src="https://png.pngtree.com/png-vector/20230120/ourmid/pngtree-dog-logo-veterinary-design-clipart-vet-golden-retriever-puppy-clinic-png-image_6565449.png" alt="" style="width:8rem;">
+    ORDER-HISTORY
+</div> 
+<div class="card-det">
+    <div class="left-col">
+        <div class="order">
+            <div class="order-header">
+                <div class="hd products">Order Id
+                    <div class="sort">
+                        <button><i class="fa-solid fa-arrow-up"></i></button><button><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                </div>
+                <div class="hd orderId">Address</div>
+                <div class="hd status">Payment Mode</div>
+            </div>
+            <div class="order-body">
+                {{#each orders}}
+                    <div class="order-row" onclick="viewMore('{{this._id}}')">
+                        <div class="td products">
+                            <h4>#PTW{{this._id}}</h4>
+                        </div>
+                    
+                        <div class="td orderId">{{this.address.fName}},{{this.address.lName}},{{this.address.addr}},{{this.address.state}},{{this.address.country}},{{this.address.pinCode}}</div>
+                        <div class="td status" style="display:flex;flex-direction:column;align-items:center;">
+                             {{this.paymentmode}}
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function viewMore(id){
+        window.location.href = "/cart/order/" + id;
+    }
+</script>

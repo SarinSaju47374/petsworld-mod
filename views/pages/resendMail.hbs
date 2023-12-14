@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 100px;color:white;
+            background-color: #0b243b;
+        }
+        a{
+            color:orange;
+            display: inline-block;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #1271c99e;
+            border-radius: 6px;
+            padding: 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+         
+        p {
+            font-size: 18px;
+            {{!-- color: #555555; --}}
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" data-uid="{{id}}" data-aos="zoom-out-down">
+        <h1>Check Your Email</h1>
+        <p>An email has been sent to your inbox. Please check your email for verification.</p>
+        <a href="#" class="button">Resend Email</a>
+        <h5><span><a href="/register">Re-Register</a></span>    If the session EXPIRES!</h5>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let data = document.querySelector(".container").dataset.uid;
+        let btn = document.querySelector(".button");
+        btn.addEventListener("click",async ()=>{
+            
+            try {
+                const response = await fetch('/register', {
+                    method: 'PUT', // or 'POST' if appropriate
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId: `${data}` }),
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Error updating data');
+                }
+                
+                const dt = await response.json();
+                if(dt.sent){
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Mail Sent! Check your Mail',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Token Expired Amigos!',
+                    })
+                }
+                // Perform any necessary DOM manipulation or UI updates here
+                
+            } catch (error) {
+                console.error('Error updating data:', error);
+                // Handle any errors that occurred during the fetch request
+            }
+
+        })
+    </script>
+</body>
+</html>

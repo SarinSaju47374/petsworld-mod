@@ -1,0 +1,479 @@
+<div class="search-cont2">
+    <input type="text" placeholder="Search in Cart...">
+    <div class="typing">.</div>
+    <a href=""><i class="fa-solid fa-magnifying-glass"></i></a></i>
+</div>
+<div class="go-up" id="scrollToTopBtn">
+  <i class="fa-solid fa-arrow-up"></i>
+</div>
+<div class="container-category" id="container-category">
+  {{!-- Dynamic Data --}}
+</div>
+
+<div class="main-container" style="position:relative">
+
+  <div class="sidebar-container">
+    <div class="category-section">
+      <h2>Category</h2>
+      <select id="ctgry">
+          <option value="">All</option>
+        <!-- Add more categories here -->
+      </select>
+      <h2>Sub Category</h2>
+      <select id="subCtgry">
+        <option value="">Select</option>
+        <!-- Add more categories here -->
+      </select>
+    </div>
+
+    <div class="price-section">
+      <h2>Price Range</h2>
+
+      <!-- With number fields -->
+      <div class="filter level-filter level-req">
+        <div id="rangeSlider" class="range-slider">
+          <div class="number-group">
+            <input
+              class="number-input"
+              type="number"
+              step="0.01"
+              value="10"
+              min="0"
+               
+            />
+            to
+            <input
+              class="number-input"
+              type="number"
+              step="0.01"
+              value="400"
+              min="0"
+               
+            />
+          </div>
+
+          <div class="range-group">
+            <input
+              class="range-input"
+              value="10"
+              min="1"
+              step="0.01"
+              step="1"
+              type="range"
+            />
+            <input
+              class="range-input"
+              value="400"
+              min="1"
+               step="0.01"
+              step="1"
+              type="range"
+            />
+          </div>
+        </div>
+      </div><!-- // filter level-filter -->
+    </div>
+
+    {{!-- <div class="filter-section">
+      <h2>Filter</h2>
+      <label>
+        <input type="radio" name="filter-option" value="all" checked />
+        All
+      </label>
+      <label>
+        <input type="radio" name="filter-option" value="option1" />
+        Option 1
+      </label>
+      <label>
+        <input type="radio" name="filter-option" value="option2" />
+        Option 2
+      </label>
+      <!-- Add more filter options here -->
+    </div> --}}
+  </div>
+
+  <div class="container-content" data-cat="{{cat}}&{{sub}}">
+     <div class="content-cards">
+            
+    </div>
+  </div>
+  <div class="pagination">
+            <ul></ul>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    //   SCROLL JS
+    let link;
+    // Get the button element
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    // Function to check the scroll position and toggle button visibility
+    function toggleScrollToTopBtn() {
+        if (window.pageYOffset > 100) {
+            scrollToTopBtn.classList.add('scroll');
+        } else {
+            scrollToTopBtn.classList.remove('scroll');
+        }
+    }
+
+    // Function to scroll to the top when the button is clicked
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Add scroll event listener to check the scroll position
+    window.addEventListener('scroll', toggleScrollToTopBtn);
+
+    // Add click event listener to scroll to the top when the button is clicked
+    scrollToTopBtn.addEventListener('click', scrollToTop);
+
+
+    (function () {
+        var parent = document.querySelector("#rangeSlider");
+        if (!parent) return;
+
+        var rangeS = parent.querySelectorAll("input[type=range]");
+        var numberS = parent.querySelectorAll("input[type=number]");
+
+        rangeS.forEach(function (el) {
+            el.addEventListener("input", function () {
+                var slide1 = parseFloat(rangeS[0].value);
+                var slide2 = parseFloat(rangeS[1].value);
+
+                if (slide1 > slide2) {
+                    [slide1, slide2] = [slide2, slide1];
+                }
+
+                numberS[0].value = slide1;
+                numberS[1].value = slide2;
+                link = `/api/products?l=30&minPrice=${numberS[0].value}&maxPrice=${numberS[1].value}`;
+                
+                setTimeout(async ()=>{
+                    try{
+                        let data = await fetch(link);
+                        let prod = await data.json();
+                        totalPages = Math.ceil(prod.total / prod.limit);
+                        console.log("Search Total Pages: ",totalPages)
+                        element(totalPages, 1)
+                    }catch(err){
+                        console.log(err)
+                    }
+                },1000)
+            });
+        });
+
+        numberS.forEach(function (el) {
+            el.addEventListener("input", function () {
+                var number1 = parseFloat(numberS[0].value);
+                var number2 = parseFloat(numberS[1].value);
+
+                if (number1 > number2) {
+                    var tmp = number1;
+                    numberS[0].value = number2;
+                    numberS[1].value = tmp;
+                }
+
+                rangeS[0].value = number1;
+                rangeS[1].value = number2;
+
+            });
+        });
+    })();
+
+
+      //   SCROLL JS  
+
+    let container = document.querySelector(".container-content");
+    let contentCards = document.querySelector(".content-cards");
+    var parent = document.querySelector("#rangeSlider");
+    //Filter options
+    var rangeS = parent.querySelectorAll("input[type=range]");
+    var numberS = parent.querySelectorAll("input[type=number]");
+    let subCtgry = document.getElementById("subCtgry");
+    let ctgry = document.getElementById("ctgry");
+    let search2 = document.querySelector(".search-cont2");
+    
+    let pg;
+    let totalPages;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        let [cat, sub] = container.dataset.cat.split("&");
+        link = `/api/products?l=30&cat=${cat}&subCat=${sub}`
+        try {
+            let data = await fetch(link);
+            let prod = await data.json();
+            let prices = prod.products.map(val => {
+                return val.salePrice
+            })
+            numberS[1].setAttribute("max", parseFloat(Math.max(...prices)));
+            rangeS[1].setAttribute("max", parseFloat(Math.max(...prices)));
+
+            {{!-- run(link); --}}
+            runC(`/custom/categories`);
+            totalPages = Math.ceil(prod.total / prod.limit);
+            element(totalPages, 1)
+        } catch (err) {
+            console.log("Error inside the DOM CONTENT LOADED: ", err)
+        }
+        categoryRender()
+
+    })
+    search2.addEventListener("input", async function (e) {
+        link = `/api/products?l=30&s=${e.target.value.trim()}`
+  
+        try{
+            let data = await fetch(link);
+            let prod = await data.json();
+            totalPages = Math.ceil(prod.total / prod.limit);
+            console.log("Search Total Pages: ",totalPages)
+            element(totalPages, 1)
+        }catch(err){
+          console.log(err)
+        }
+        {{!-- run(link) --}}
+    })
+    async function run(url) {
+
+        try {
+            let data = await fetch(url);
+            let prod = await data.json();
+            contentCards.innerHTML = ""
+            if (prod.products.length >= 1) {
+                prod.products.forEach(pr => {
+                    contentCards.innerHTML += `
+                            <div class="card">
+                                <div class="preview">
+                                    <a href="/product-descr?oid=${pr._id}"><img src="${pr.photo[0].filepath}" alt=""></a>
+                                </div>
+                                <h6>${pr.brandName}</h6>
+                                <h5>${pr.productName}</h5>
+                                <div class="star-rating" style="--rating:${pr.rating}%;">
+                                    <div class="star" id="starRating">
+                                        ★★★★★
+                                    </div>
+                                </div>
+                                <div class="coupon">
+                                    <p></p>
+                                </div>
+                                <div class="price">
+                                    <h6>Rs ${pr.productPrice}<h6>
+                                    <h6>Rs ${pr.salePrice}</h6>
+                                </div>
+                                ${pr.stock<=2?`
+                                    <div class="outOfStock">
+                                        <i class="fa-solid fa-boxes-stacked"></i> NO STOCK
+                                    </div>
+                                `:``}
+                                ${pr.stock>=2?`
+                                    <div class="options">
+                                        <button style="background-color:transparent;border:none;cursor:pointer" onclick='cartAdder("${pr._id}")'><i class="fa-solid fa-cart-shopping"></i></button>
+                                        <a href="#"><i class="fa-solid fa-heart"></i></a>
+                                        <a href="/product-descr?oid=${pr._id}"><i class="fa-solid fa-eye"></i></a>
+                                    </div>
+                                `:`
+                                    <div class="options">
+                                        <button style="background-color:transparent;border:none;cursor:pointer" onclick='noStock()'><i class="fa-solid fa-cart-shopping"></i></button>
+                                        <a href=""><i class="fa-solid fa-heart"></i></a>
+                                        <a href="/product-descr?oid={{this._id}}"><i class="fa-solid fa-eye"></i></a>
+                                    </div>
+                                `}
+
+                            </div>
+                        `
+                })
+            } else {
+                console.log("Im in else")
+                contentCards.innerHTML = `
+                          <img src="https://www.freeiconspng.com/thumbs/dog-png/dog-png-30.png" alt="Doggy">
+                          <h4>No Product With that option you Selected</h4>
+                      `
+                ulTag.innerHTML = "";
+            }
+        } catch (err) {
+            console.log("Err in DogFood hbs : ", err);
+
+        }
+    }
+    async function runC(url) {
+        try {
+            let data = await fetch(url);
+            let ctr = await data.json();
+            ctr.forEach(val => {
+                ctgry.innerHTML += `<option value="${val._id}">${val.name}</option>`
+            })
+        } catch (err) {
+            console.log("Error inside runC: ", err);
+        }
+    }
+    ctgry.addEventListener("input", async function () {
+        run(`/api/products?l=30&cat=${this.options[this.selectedIndex].textContent}`)
+        try {
+            let data = await fetch(`/custom/subCategories/${this.value}`);
+            let subCtr = await data.json();
+            subCtr.forEach(val => {
+                subCtgry.innerHTML += `<option value="${val.name}">${val.name}</option>`
+            })
+        } catch (err) {
+            console.log("Error in the dogFood ctgry change part :", err)
+        }
+    })
+
+    subCtgry.addEventListener("input", async function () {
+        console.log("subCategory targeted")
+        link = `/api/products?l=30&cat=${ctgry.options[ctgry.selectedIndex].textContent}&subCat=${this.value}`
+        setTimeout(async ()=>{
+            try{
+                let data = await fetch(link);
+                let prod = await data.json();
+                totalPages = Math.ceil(prod.total / prod.limit);
+                console.log("Search Total Pages: ",totalPages)
+                element(totalPages, 1)
+            }catch(err){
+                console.log(err)
+            }   
+        },1000)
+    })
+    numberS[0].addEventListener("input", function () {
+        console.log("vbeep")
+    })
+
+    function noStock(){
+        Swal.fire({
+            icon: 'info',
+            title: 'Sorry!',
+            text: 'No Stock Amigo!',
+            footer: 'Try Saving this Product to your WishList.'
+        })
+    }
+    // *************PAGINATION UI******************
+
+    let ulTag = document.querySelector(".pagination ul");
+
+    function element(totalPages, page) {
+        console.log("This is presented")
+        flag = 3;
+        let liTag = "";
+        let beforePages = page - 1;
+        let afterPages = page + 1;
+        let activeLi;
+
+        if (page > 1) {
+            liTag += `<li class="btn prev" onclick="element(totalPages,${beforePages})"><span><i class="fa-solid fa-chevron-left"></i></span>Prev</li>`;
+        }
+        if (page > 2) {
+            liTag += `<li class="numb ${activeLi}" onclick="element(totalPages,1)"><span>1</span></li>`;
+            if (page > 3) {
+                liTag += `<li class="dots"><span>....</span></li>`
+            }
+        }
+
+
+        for (let pageLength = beforePages; pageLength <= afterPages; pageLength++) {
+            if (pageLength > totalPages || pageLength <= 0) {
+                continue;
+            }
+            if (pageLength < 1) {
+                pageLength = pageLength + 1;
+            }
+            if (page == pageLength) {
+                activeLi = "active";
+            } else {
+                activeLi = "";
+            }
+            liTag += `<li class="numb ${activeLi}" onclick="element(totalPages,${pageLength})"><span>${pageLength}</span></li>`;
+        }
+
+        if (page < totalPages - 1) {
+            if (page < totalPages - 2) {
+                liTag += `<li class="dots"><span>....</span></li>`
+            }
+            liTag += `<li class="numb" onclick="element(totalPages,${totalPages})"><span>${totalPages}</span></li>`;
+        }
+
+        if (page < totalPages) {
+            liTag += `<li class="btn next" onclick="element(totalPages,${afterPages})">Next<span><i class="fa-solid fa-chevron-right"></i></span></li>`;
+        }
+        ulTag.innerHTML = liTag
+        pg = page;
+        let url = link + `&p=${pg}`
+        run(url)
+    }
+
+        // *************PAGINATION UI****************** 
+
+    //cart Adder
+    async function cartAdder(prId) {
+        console.log(prId)
+
+        //Specific Cookie Extractor code am AMIGOS********
+        let cookieHeaderValue = document.cookie;
+        let token;
+
+        if (cookieHeaderValue) {
+            let cookies = cookieHeaderValue.split(";");
+            for (let cookie of cookies) {
+                let [cookieName, cookieValue] = cookie.trim().split("=");
+                if (cookieName === "token") {
+                    token = cookieValue;
+                    break;
+                }
+            }
+        }
+        //Specific Cookie Extractor code am AMIGOS********
+         
+        try {
+            
+            const response = await fetch(`/api/cart?prId=${prId}&tk=${token}`);
+            if (!response.ok) {
+                throw new Error('Request failed with status ' + response.status);
+            }
+            const responseData = await response.json();
+
+            // Check if the response indicates a redirect is needed
+            if (responseData.success) {
+                await Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'The Product Is Added to The Cart',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                window.location.href="/cart"
+            } else {
+                window.location.href = responseData.redirect; // Redirect the browser
+            }
+        } catch (error) {
+            // Handle any errors that occurred during the request
+            console.error('Error:', error);
+        }
+    }
+    async function categoryRender(){
+        let container = document.getElementById("container-category");
+        try{
+            const data = await fetch("/custom/subCategories");
+            const ctgrys = await data.json();
+            console.log(ctgrys);
+            ctgrys.forEach(val=>{
+                val.photo = JSON.parse(val.photo);
+                container.innerHTML+=`
+                  <div class="category" data-aos="zoom-in">
+                    <a href="/products?cat=${val.category.name}&sub=${val.name}">
+                        <div class="img-ctgry">
+                            <img
+                                src="${val.photo.filepath}"
+                                alt=""
+                                style={border-radius:25px;}
+                            />
+                        </div>
+                    </a>
+                    <p>${val.category.name} ${val.name}</p>
+                  </div>
+            ` 
+            })
+        }catch(err){
+            console.log(err);
+        }
+        
+         
+    }
+</script>

@@ -1,0 +1,210 @@
+.profile-container {
+    display: grid;
+    height:35rem;
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    
+  }
+  
+  .crd {
+    display: flex;
+    flex-direction: column;
+    background-color: #1f5486;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    overflow:hidden;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Initial box shadow */
+    transition: all 0.3s ease; 
+    color:white;
+    padding-bottom:1rem;
+  }
+  .crd:hover{
+    transform: scale(1.05);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); /* Updated box shadow on hover */
+  }
+  
+  .crd:nth-child(1){
+    grid-row:1/4;
+    grid-column:1/2;
+    border-radius:2rem;
+    text-align:center;
+    height:80%;
+    width:80%;
+    margin: 0 auto;
+  }
+  .crd:nth-child(1) .crd-section{
+     margin-top: 1rem;
+  }
+  .crd:nth-child(1) button{
+    background-color:transparent;
+    padding:0.65rem;
+    border-radius:12px;
+    cursor:pointer;
+    color:white;
+    border:1px white solid;
+  }   
+  .crd:nth-child(1) button:nth-child(1):hover{
+    border:1px cyan solid;
+    color:cyan;
+  }
+  .crd:nth-child(1) button:nth-child(2):hover{
+    color:magenta;
+    border:1px magenta solid;
+  }
+  .crd:nth-child(1) button:nth-child(3):hover{
+   color:orange;
+    border:1px orange solid;
+  }
+  header {
+    background-color: #f08521;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  h1 {
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    color:white;
+  }
+  
+  .crd-section {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  h2 {
+    color: #fff;
+    margin:0;
+  }
+  
+  p {
+    margin: 0;
+  }
+  .profile-photo{
+    overflow:hidden;
+    min-height:70%;
+  }
+  .profile-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+     cursor:pointer;
+  }
+  #upload-photo{
+    display:none;
+  }
+  input{
+    background-color: #0b243b;
+    border:1px solid gray;
+    border-radius:23px;
+    font-size: 12px;
+    outline:none;
+    padding-left:1rem;
+    height:2rem;
+    color:white;
+}
+  .checkout-bs-form{
+    display: none;
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    background-color:#0b243b;
+    width:30%;
+    padding:2rem;
+    border-radius: 1rem;
+    border:1px solid rgb(6, 230, 246);
+    z-index:100;
+
+  }
+  .checkout-bs-form form{
+      width:100%;
+      /* height: 80vh; */
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      /* justify-content: space-between; */
+      
+  }
+  .checkout-bs-form form .changeAdd{
+      color:white;
+      background-color:orange;
+      padding:1rem;
+      width:10rem;
+      text-align: center;
+      margin-top:1rem;
+      border-radius:12px;
+  }
+  .checkout-bs-form form .closeFrm{
+      color:white;
+      background-color:rgb(255, 17, 0);
+      padding:1rem;
+      width:10rem;
+      text-align: center;
+      margin-top:1rem;
+      border-radius:12px;
+  }
+  .checkout-bs-form form .bck-cart{
+      color:white;
+      margin-top:1rem;
+  }
+  @media (max-width: 768px) {
+    .profile-container {
+      grid-template-columns: 1fr;
+      height:fit-content;
+    }
+    .checkout-bs-form{
+      display: none;
+      position: fixed;
+      top:50%;
+      left:50%;
+      transform: translate(-50%,-50%);
+      /* display: flex; */
+      box-sizing: border-box;
+      min-height: 80vh;
+      background-color:#0b243b;
+      width:90%;
+      padding:2rem;
+      border-radius: 1rem;
+      border:1px solid rgb(6, 230, 246);
+      overflow-y: scroll; 
+  }
+  .checkout-bs-form form{
+      width:100%;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      /* justify-content: space-between; */
+      
+  }
+  .checkout-bs-form form .changeAdd{
+      color:white;
+      background-color:orange;
+      padding:1rem;
+      width:10rem;
+      text-align: center;
+      margin-top:1rem;
+      border-radius:12px;
+  }
+  .checkout-bs-form form .closeFrm{
+      color:white;
+      background-color:rgb(255, 17, 0);
+      padding:1rem;
+      width:10rem;
+      text-align: center;
+      margin-top:1rem;
+      border-radius:12px;
+  }
+  .checkout-bs-form form .bck-cart{
+      color:white;
+      margin-top:1rem;
+  }
+  }
+  
