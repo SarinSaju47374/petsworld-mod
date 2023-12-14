@@ -260,13 +260,8 @@ app.get("/test",(req,res)=>{
 
 //Just Test for admin Page SetUp
 import sendMail from "./utils/sendMail.js";
-app.get("/sendMail",(req,res)=>{
-  // 
-  if(req.session.data){
-    res.json({"session":req.session.data})
-  }else{
-    res.json({"session":"no session"})
-  }
+app.get("/hey",(req,res)=>{
+  res.send("Hey its working")
   
 })
 
