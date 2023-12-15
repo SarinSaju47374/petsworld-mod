@@ -428,12 +428,12 @@
             if (!response.ok) return;
 
             const products = await response.json();
-            //
+            //  
 
             if (!products.valid) return;
             // Update the status slider HTML based on the received status
             orderStatus.innerHTML = "";
-            products.products.forEach(val => {
+            products?.products.forEach(val => {
                 switch (val.status) {
                     case "orderPlaced":
                         orderStatus.innerHTML += `
